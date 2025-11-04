@@ -1,0 +1,479 @@
+<krpano>
+
+  <menu_sm  
+       open_start="true"
+       open_start_mob="false"
+       click_hide="false"
+       mobile_click_hide="true"
+       menu_width="268"
+       menu_height="50%"
+       menu_x="0"
+       menu_y="173"
+       menu_bgcolor="0xFF0A0A"
+       menu_bgborder="0,0,0,0 0x6698A8 0.96"
+       menu_bgroundedge="0 19 19 0"
+       menu_bgshadow="2 2 3 0x0D0D0D 0.42"
+       menu_bgalpha="0.66"
+       menu_align="lefttop"
+       logo_cont_height="7"
+       logo_height="56"
+       logo_cont_color="0xFF0A0A"
+       logo_cont_alpha="0.50"
+       logo_y="6"
+       logo_x="4"
+       logo=""
+       logo_text=""
+       logo_txtshadow="2 2 4 0x000000 0.60"
+       logo_css_text="margin:0px 0px 0px 12px;font-family:Verdana; font-style:italic; color:#A1A1A1; font-size:15px;"
+       logo_padding="0 131 10 8"
+       logo_click=""
+       title_height="34"
+       title_width="100%"
+       title_bgcolor="0xF50000"
+       title_bgalpha="1.00"
+       title_bgshadow="0 5 18 0x191919 0.54"
+       title_bgborder="1,1,1,1 0xA3AFB0 1.00"
+       title_bgroundedge="0 0 0 0"
+       title_text_1="Menu"
+       title_text_2="Menu"
+       title_text_3="Menu 3"
+       title_text_4="Menu 4"
+       title_text_bgshadow="2 1 4 0x000000 0.48"
+       title_css="font-family:Verdana; font; text-align:center; margin-left:20px; margin-right:5px; color:#FCFCFC; font-size:16px;"
+       title_padding="0 45 0 0"
+       title_onover_color="3571594"
+       title_picture=""
+       group_indicator_height="20"
+       head_step_v="10"
+       head_width="90%"
+       head_height="45"
+       head_x="0"
+       head_bgcolor="0x233A4D"
+       head_bgalpha="0.99"
+       head_bgborder="2,0,0,2 0x628D8F 0.97"
+       head_bgroundedge="0 16 0 17"
+       head_bgshadow="3 4 3 0x0A0A0A 0.44"
+       head_text_bgshadow="2 4 4 0x000000 0.43"
+       head_padding="0 10 0 18"
+       head_line_css="margin:0px 0px 0px 12px;font-family:Verdana; font-style:italic; color:#FFFFFF; font-size:15px;"
+       head_onover_color="0x2B828F"
+       head_onover_bgalpha="0.9"
+       line_step_v="6"
+       line_width="90%"
+       line_height="32"
+       line_x="0"
+       line_bgcolor="0x296E78"
+       line_bgalpha="0.98"
+       line_onover_color="0x3AADBF"
+       line_onover_bgalpha="0.9"
+       line_bgborder="2,0,0,2 0x61A8B3 0.98"
+       line_bgroundedge="9 9 9 9"
+       line_bgshadow="2 3 3 0x052129 0.64"
+       line_text_bgshadow="2 2 4 0x000000 0.6"
+       line_padding="0 10 0 21"
+       line_css="font-family:Verdana; font-style:italic; color:#FFFFFF; font-size:12px;"
+       line_css2="font-family:Verdana; font-style:italic; font-size:12px; color:#FFFF00;"
+       thumbnail_width="90%"
+       thumbnail_height="98"
+       thumbnail_x="0"
+       thumbnail_step_v="12"
+       thumbnail_bgcolor="0x0B5D66"
+       thumbnail_bgalpha="0.29"
+       thumbnail_onover_bgalpha="0.76"
+       thumbnail_onover_color="0x0F5230"
+       thumbnail_bgroundedge="0 19 0 13"
+       thumbnail_bgborder="0,0,0,0 0xFFFFFF 0.97"
+       thumbnail_bgshadow="6 8 13 0x000000 0.51"
+       thumbnail_text_bgshadow="1 1 3 0x1D1D1D 0.82"
+       thumbnail_padding="0 1 0 0"
+       thumbnail_css="margin:0px 0px 0px 12px;font-family:Verdana; font-style:italic; color:#FFFFFF; font-size:15px;"
+       view_marker="true"
+       picture_url="%FIRSTXML%/menu/image/Picture/butt2.jpg"
+       picture_height="37"
+       picture_alpha="1"
+       picture_bgborder="0,0,0,0 0xFFFFFF 1"
+       picture_bgroundedge="2 2 2 2"
+       picture_bgshadow="2 2 3  0x1D1D1D 0.6"
+       picture_crop="0|80|273|80"
+       picture_onower="set(crop,0|0|273|80);"
+       picture_onout="set(crop,0|80|273|80);"
+       picture_padding="0 5 0 20"
+       picture_css="font-family:Verdana; font-style:italic; font-size:14px; color:#FFFFFF; text-align:center;"
+       icon_style_line="height:25px;vertical-align:middle; margin-right:10px;"
+       icon_style_head="height:25px;vertical-align:middle; margin-right:10px;"
+       bottom_height="40"
+       lang_1="RU"
+       lang_2="EN"
+       lang_3=""
+       lang_4=""
+       loadscene_flags="MERGE"
+       download_delay="1"
+       picture_line="0"
+       
+   />
+ 
+ <layer name="gr_1" style="cont_gr" visible="true" enabled="true" step_g="1" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="scr_gr_1" parent="gr_1" style="scroll_m" height="285" y="0.30453147439744777" />
+ 
+   <layer name="line_1_1" parent="scr_gr_1" style="header_container" onclick="next_menu();" y="10" group="true" pos="1" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="line_1_2" parent="scr_gr_1" style="header_container" onclick="next_menu();" y="65" group="true" pos="2" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="line_1_3" parent="scr_gr_1" style="header_container" onclick="next_menu();" y="120" group="true" pos="3" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="line_1_4" parent="scr_gr_1" style="header_container" onclick="next_menu();" y="175" group="true" pos="4" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="line_1_5" parent="scr_gr_1" style="header_container" onclick="next_menu();" y="230" group="true" pos="5" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="gr_1_1" style="cont_gr" x="268" step_g="2" txt_layer="txt_1_1" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="scr_gr_1_1" parent="gr_1_1" style="scroll_m" height="230" />
+ 
+   <layer name="line_1_1_1" parent="scr_gr_1_1" style="container_thumbnails" onclick="load_m(scene_dji_0088_sky-2);" y="12" pos="1" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_1_1" parent="line_1_1_1" style="menu_thumbnail" url="%FIRSTXML%/panos/DJI_0088_sky-2.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_1_2" parent="scr_gr_1_1" style="container_thumbnails" onclick="load_m(scene_drone_view_2_final);" y="122" pos="2" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_1_2" parent="line_1_1_2" style="menu_thumbnail" url="%FIRSTXML%/panos/Drone_view_2_final.tiles/thumb.jpg" />
+ 
+   <layer name="gr_1_2" style="cont_gr" x="268" step_g="2" txt_layer="txt_1_2" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="scr_gr_1_2" parent="gr_1_2" style="scroll_m" height="450" />
+ 
+   <layer name="line_1_2_1" parent="scr_gr_1_2" style="container_thumbnails" onclick="load_m(scene_auditorium_inside);" y="12" pos="1" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_2_1" parent="line_1_2_1" style="menu_thumbnail" url="%FIRSTXML%/panos/Auditorium_Inside.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_2_3" parent="scr_gr_1_2" style="container_thumbnails" onclick="load_m(scene_amphitheatre);" y="122" pos="2" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_2_3" parent="line_1_2_3" style="menu_thumbnail" url="%FIRSTXML%/panos/Amphitheatre.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_2_2" parent="scr_gr_1_2" style="container_thumbnails" onclick="load_m(scene_hostel_room);" y="232" pos="3" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_2_2" parent="line_1_2_2" style="menu_thumbnail" url="%FIRSTXML%/panos/Hostel_Room.tiles/thumb.jpg" />
+ 
+   <layer name="gr_1_3" style="cont_gr" x="268" step_g="2" txt_layer="txt_1_3" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="scr_gr_1_3" parent="gr_1_3" style="scroll_m" height="560" />
+ 
+   <layer name="line_1_3_2" parent="scr_gr_1_3" style="container_thumbnails" onclick="load_m(scene_accounts_department);" y="12" pos="1" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_3_2" parent="line_1_3_2" style="menu_thumbnail" url="%FIRSTXML%/panos/Accounts_Department.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_3_1" parent="scr_gr_1_3" style="container_thumbnails" onclick="load_m(scene_conference_room);" y="122" pos="2" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_3_1" parent="line_1_3_1" style="menu_thumbnail" url="%FIRSTXML%/panos/Conference_Room.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_3_3" parent="scr_gr_1_3" style="container_thumbnails" onclick="load_m(scene_vc_room);" y="232" pos="3" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_3_3" parent="line_1_3_3" style="menu_thumbnail" url="%FIRSTXML%/panos/VC_Room.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_3_4" parent="scr_gr_1_3" style="container_thumbnails" onclick="load_m(scene_campus_entrance);" y="342" pos="4" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_3_4" parent="line_1_3_4" style="menu_thumbnail" url="%FIRSTXML%/panos/Campus_Entrance.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_3_5" parent="scr_gr_1_3" style="container_thumbnails" onclick="stopsound(test); skin_loadscene(video_short);" y="452" pos="5" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_3_5" parent="line_1_3_5" style="menu_thumbnail" url="%FIRSTXML%/panos/office.tiles/thumb.jpg" />
+ 
+   <layer name="gr_1_4" style="cont_gr" x="268" step_g="2" txt_layer="txt_1_4" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="scr_gr_1_4" parent="gr_1_4" style="scroll_m" height="1770" y="-1391.512413628921" />
+ 
+   <layer name="line_1_4_1" parent="scr_gr_1_4" style="container_thumbnails" onclick="load_m(scene_IT_Lab_D12);" y="12" pos="1" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_4_1" parent="line_1_4_1" style="menu_thumbnail" url="%FIRSTXML%/panos/Design_Labs.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_4_2" parent="scr_gr_1_4" style="container_thumbnails" onclick="load_m(scene_it_lab_d11);" y="122" pos="2" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_4_2" parent="line_1_4_2" style="menu_thumbnail" url="%FIRSTXML%/panos/IT_Lab_D11.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_4_3" parent="scr_gr_1_4" style="container_thumbnails" onclick="load_m(scene_c34_photography_lab);" y="232" pos="3" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_4_3" parent="line_1_4_3" style="menu_thumbnail" url="%FIRSTXML%/panos/C34_Photography_Lab.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_4_4" parent="scr_gr_1_4" style="container_thumbnails" onclick="load_m(scene_gc_lab_1);" y="342" pos="4" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_4_4" parent="line_1_4_4" style="menu_thumbnail" url="%FIRSTXML%/panos/GC_Lab_1.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_4_5" parent="scr_gr_1_4" style="container_thumbnails" onclick="load_m(scene_gc_lab_2);" y="452" pos="5" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_4_5" parent="line_1_4_5" style="menu_thumbnail" url="%FIRSTXML%/panos/GC_Lab_2.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_4_6" parent="scr_gr_1_4" style="container_thumbnails" onclick="load_m(scene_pattern_making_lab_2);" y="672" pos="7" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_4_6" parent="line_1_4_6" style="menu_thumbnail" url="%FIRSTXML%/panos/Pattern_Making_Lab_2.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_4_7" parent="scr_gr_1_4" style="container_thumbnails" onclick="load_m(scene_pattern_making_lab);" y="562" pos="6" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_4_7" parent="line_1_4_7" style="menu_thumbnail" url="%FIRSTXML%/panos/Pattern_Making_Lab.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_4_8" parent="scr_gr_1_4" style="container_thumbnails" onclick="load_m(scene_quality_assurance_lab);" y="782" pos="8" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_4_8" parent="line_1_4_8" style="menu_thumbnail" url="%FIRSTXML%/panos/Quality_Assurance_Lab.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_4_9" parent="scr_gr_1_4" style="container_thumbnails" onclick="load_m(scene_surface_design_lab);" y="892" pos="9" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_4_9" parent="line_1_4_9" style="menu_thumbnail" url="%FIRSTXML%/panos/Surface_Design_Lab.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_4_10" parent="scr_gr_1_4" style="container_thumbnails" onclick="load_m(scene_computorised_knitting_lab);" y="1002" pos="10" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_4_10" parent="line_1_4_10" style="menu_thumbnail" url="%FIRSTXML%/panos/Computorised_Knitting_Lab.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_4_11" parent="scr_gr_1_4" style="container_thumbnails" onclick="load_m(scene_circular_knitting_lab);" y="1112" pos="11" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_4_11" parent="line_1_4_11" style="menu_thumbnail" url="%FIRSTXML%/panos/Circular_Knitting_Lab.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_4_12" parent="scr_gr_1_4" style="container_thumbnails" onclick="load_m(scene_hand_flat_bed_knitting_lab);" y="1222" pos="12" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_4_12" parent="line_1_4_12" style="menu_thumbnail" url="%FIRSTXML%/panos/Hand_Flat_Bed_Knitting_Lab.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_4_13" parent="scr_gr_1_4" style="container_thumbnails" onclick="load_m(scene_accessory_machine_workshop);" y="1332" pos="13" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_4_13" parent="line_1_4_13" style="menu_thumbnail" url="%FIRSTXML%/panos/Accessory_Machine_Workshop.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_4_14" parent="scr_gr_1_4" style="container_thumbnails" onclick="load_m(scene_pattern_making_lab_new_building);" y="1442" pos="14" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_4_14" parent="line_1_4_14" style="menu_thumbnail" url="%FIRSTXML%/panos/Pattern_Making_Lab_New_Building.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_4_15" parent="scr_gr_1_4" style="container_thumbnails" onclick="load_m(scene_gc_lab_new_building);" y="1552" pos="15" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_4_15" parent="line_1_4_15" style="menu_thumbnail" url="%FIRSTXML%/panos/GC_Lab_New_Building.tiles/thumb.jpg" />
+ 
+   <layer name="gr_1_5" style="cont_gr" x="268" step_g="2" txt_layer="txt_1_5" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="scr_gr_1_5" parent="gr_1_5" style="scroll_m" height="1000" />
+ 
+   <layer name="line_1_5_1" parent="scr_gr_1_5" style="container_thumbnails" onclick="load_m(scene_fc_classroom);" y="12" pos="1" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_5_1" parent="line_1_5_1" style="menu_thumbnail" url="%FIRSTXML%/panos/FC_Classroom.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_5_2" parent="scr_gr_1_5" style="container_thumbnails" onclick="load_m(scene_fd_classroom);" y="12" pos="1" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_5_2" parent="line_1_5_2" style="menu_thumbnail" url="%FIRSTXML%/panos/FD_Classroom.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_5_3" parent="scr_gr_1_5" style="container_thumbnails" onclick="load_m(scene_td2_design_studio);" y="12" pos="1" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_5_3" parent="line_1_5_3" style="menu_thumbnail" url="%FIRSTXML%/panos/TD2_Design_Studio.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_5_4" parent="scr_gr_1_5" style="container_thumbnails" onclick="load_m(scene_accessory_design_classroom);" y="122" pos="2" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_5_4" parent="line_1_5_4" style="menu_thumbnail" url="%FIRSTXML%/panos/Accessory_Design_Classroom.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_5_5" parent="scr_gr_1_5" style="container_thumbnails" onclick="load_m(scene_accessory_design_workshop);" y="232" pos="3" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_5_5" parent="line_1_5_5" style="menu_thumbnail" url="%FIRSTXML%/panos/Accessory_Design_Workshop.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_5_7" parent="scr_gr_1_5" style="container_thumbnails" onclick="load_m(scene_j3_classroom);" y="342" pos="4" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_5_7" parent="line_1_5_7" style="menu_thumbnail" url="%FIRSTXML%/panos/J3_Classroom.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_5_6" parent="scr_gr_1_5" style="container_thumbnails" onclick="load_m(scene_c13_art_room);" y="452" pos="5" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_5_6" parent="line_1_5_6" style="menu_thumbnail" url="%FIRSTXML%/panos/C13_Art_Room.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_5_8" parent="scr_gr_1_5" style="container_thumbnails" onclick="load_m(scene_n8);" y="562" pos="6" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_5_8" parent="line_1_5_8" style="menu_thumbnail" url="%FIRSTXML%/panos/N8.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_2_5" parent="scr_gr_1_2" style="container_thumbnails" onclick="load_m(scene_library);" y="342" pos="4" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_2_5" parent="line_1_2_5" style="menu_thumbnail" url="%FIRSTXML%/panos/Library.tiles/thumb.jpg" />
+ 
+   <layer name="gr_1_5_9" style="cont_gr" x="536" step_g="3" txt_layer="txt_1_5_9" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="scr_gr_1_5_9" parent="gr_1_5_9" style="scroll_m" />
+ 
+   <layer name="line_1_5_9" parent="scr_gr_1_5" style="container_thumbnails" onclick="load_m(scene_c32);" y="672" pos="7" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_5_9" parent="line_1_5_9" style="menu_thumbnail" url="%FIRSTXML%/panos/C32.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_5_10" parent="scr_gr_1_5" style="container_thumbnails" onclick="load_m(fc);" y="782" pos="8" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_5_10" parent="line_1_5_10" style="menu_thumbnail" url="%FIRSTXML%/panos/FC2.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_5_11" parent="scr_gr_1_5" style="container_thumbnails" onclick="load_m(scene_fc_classroom);" y="892" pos="9" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_5_11" parent="line_1_5_11" style="menu_thumbnail" url="%FIRSTXML%/panos/FC_Classroom.tiles/thumb.jpg" />
+ 
+   <layer name="line_1_4_16" parent="scr_gr_1_4" style="container_thumbnails" onclick="load_m(scene_weaving_studio);" y="1662" pos="16" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="miniat_1_4_16" parent="line_1_4_16" style="menu_thumbnail" url="%FIRSTXML%/panos/Weaving_Studio.tiles/thumb.jpg" />
+ 
+   <layer name="marker_1_1_1" parent="line_1_1_1" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_1_2" parent="line_1_1_2" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_2_1" parent="line_1_2_1" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_2_3" parent="line_1_2_3" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_2_2" parent="line_1_2_2" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_3_2" parent="line_1_3_2" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_3_1" parent="line_1_3_1" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_3_3" parent="line_1_3_3" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_3_4" parent="line_1_3_4" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_3_5" parent="line_1_3_5" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_4_1" parent="line_1_4_1" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_4_2" parent="line_1_4_2" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_4_3" parent="line_1_4_3" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_4_4" parent="line_1_4_4" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_4_5" parent="line_1_4_5" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_4_6" parent="line_1_4_6" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_4_7" parent="line_1_4_7" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_4_8" parent="line_1_4_8" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_4_9" parent="line_1_4_9" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_4_10" parent="line_1_4_10" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_4_11" parent="line_1_4_11" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_4_12" parent="line_1_4_12" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_4_13" parent="line_1_4_13" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_4_14" parent="line_1_4_14" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_4_15" parent="line_1_4_15" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_5_1" parent="line_1_5_1" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_5_2" parent="line_1_5_2" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_5_3" parent="line_1_5_3" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_5_4" parent="line_1_5_4" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_5_5" parent="line_1_5_5" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_5_7" parent="line_1_5_7" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_5_6" parent="line_1_5_6" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_5_8" parent="line_1_5_8" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_2_5" parent="line_1_2_5" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_5_9" parent="line_1_5_9" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_5_10" parent="line_1_5_10" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_5_11" parent="line_1_5_11" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="marker_1_4_16" parent="line_1_4_16" style="indik_prosmotr" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="txt_1_1" parent="line_1_1" style="txt_head" txt_1="Aerial Views" text="Aerial Views" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="txt_1_2" parent="line_1_2" style="txt_head" txt_1="Facilities" text="Facilities" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="txt_1_3" parent="line_1_3" style="txt_head" txt_1="Admin Block" text="Admin Block" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="txt_1_4" parent="line_1_4" style="txt_head" txt_1="Academic Labs" text="Academic Labs" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="txt_1_5" parent="line_1_5" style="txt_head" txt_1="Academic Departments" text="Academic Departments" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" />
+ 
+   <layer name="txt_1_1_1" parent="line_1_1_1" style="txt_menu_thumbnail" txt_1="Aerial View 1" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Aerial View 1" />
+ 
+   <layer name="txt_1_1_2" parent="line_1_1_2" style="txt_menu_thumbnail" txt_1="Aerial view 2" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Aerial view 2" />
+ 
+   <layer name="txt_1_2_1" parent="line_1_2_1" style="txt_menu_thumbnail" txt_1="Auditorium" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Auditorium" />
+ 
+   <layer name="txt_1_2_3" parent="line_1_2_3" style="txt_menu_thumbnail" txt_1="Amphitheatre" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Amphitheatre" />
+ 
+   <layer name="txt_1_2_2" parent="line_1_2_2" style="txt_menu_thumbnail" txt_1="Hostel Room" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Hostel Room" />
+ 
+   <layer name="txt_1_3_2" parent="line_1_3_2" style="txt_menu_thumbnail" txt_1="Admin Office" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Admin Office" />
+ 
+   <layer name="txt_1_3_1" parent="line_1_3_1" style="txt_menu_thumbnail" txt_1="Conference Room" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Conference Room" />
+ 
+   <layer name="txt_1_3_3" parent="line_1_3_3" style="txt_menu_thumbnail" txt_1="Video Conferernce Room" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Video Conferernce Room" />
+ 
+   <layer name="txt_1_3_4" parent="line_1_3_4" style="txt_menu_thumbnail" txt_1="Reception" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Reception" />
+ 
+   <layer name="txt_1_3_5" parent="line_1_3_5" style="txt_menu_thumbnail" txt_1="Director Office" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Director Office" />
+ 
+   <layer name="txt_1_4_1" parent="line_1_4_1" style="txt_menu_thumbnail" txt_1="Design Lab" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Design Lab" />
+ 
+   <layer name="txt_1_4_2" parent="line_1_4_2" style="txt_menu_thumbnail" txt_1="Mac Lab" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Mac Lab" />
+ 
+   <layer name="txt_1_4_3" parent="line_1_4_3" style="txt_menu_thumbnail" txt_1="Photography Lab" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Photography Lab" />
+ 
+   <layer name="txt_1_4_4" parent="line_1_4_4" style="txt_menu_thumbnail" txt_1="Garment Construction Lab 1" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Garment Construction Lab 1" />
+ 
+   <layer name="txt_1_4_5" parent="line_1_4_5" style="txt_menu_thumbnail" txt_1="Garment Construction Lab 2" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Garment Construction Lab 2" />
+ 
+   <layer name="txt_1_4_6" parent="line_1_4_6" style="txt_menu_thumbnail" txt_1="Pattern Making Lab 2" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Pattern Making Lab 2" />
+ 
+   <layer name="txt_1_4_7" parent="line_1_4_7" style="txt_menu_thumbnail" txt_1="Pattern Making Lab" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Pattern Making Lab" />
+ 
+   <layer name="txt_1_4_8" parent="line_1_4_8" style="txt_menu_thumbnail" txt_1="Quality Assurance Lab" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Quality Assurance Lab" />
+ 
+   <layer name="txt_1_4_9" parent="line_1_4_9" style="txt_menu_thumbnail" txt_1="Surface Design Lab" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Surface Design Lab" />
+ 
+   <layer name="txt_1_4_10" parent="line_1_4_10" style="txt_menu_thumbnail" txt_1="Computerized Knitting Lab" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Computerized Knitting Lab" />
+ 
+   <layer name="txt_1_4_11" parent="line_1_4_11" style="txt_menu_thumbnail" txt_1="Circular Knitting Lab" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Circular Knitting Lab" />
+ 
+   <layer name="txt_1_4_12" parent="line_1_4_12" style="txt_menu_thumbnail" txt_1="Hand Flat Bed Knitting Lab" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Hand Flat Bed Knitting Lab" />
+ 
+   <layer name="txt_1_4_13" parent="line_1_4_13" style="txt_menu_thumbnail" txt_1="Accessory Machine Workshop" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Accessory Machine Workshop" />
+ 
+   <layer name="txt_1_4_14" parent="line_1_4_14" style="txt_menu_thumbnail" txt_1="Pattern Making Lab New Building" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Pattern Making Lab New Building" />
+ 
+   <layer name="txt_1_4_15" parent="line_1_4_15" style="txt_menu_thumbnail" txt_1="Garment Construction Lab New Building" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Garment Construction Lab New Building" />
+ 
+   <layer name="txt_1_5_1" parent="line_1_5_1" style="txt_menu_thumbnail" txt_1="Foundation Program Classroom1" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Foundation Program Classroom1" />
+ 
+   <layer name="txt_1_5_2" parent="line_1_5_2" style="txt_menu_thumbnail" txt_1="Fashion Design Classroom" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Fashion Design Classroom" />
+ 
+   <layer name="txt_1_5_3" parent="line_1_5_3" style="txt_menu_thumbnail" txt_1=" Design Classroom" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text=" Design Classroom" />
+ 
+   <layer name="txt_1_5_4" parent="line_1_5_4" style="txt_menu_thumbnail" txt_1="Accessory Design Classroom" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Accessory Design Classroom" />
+ 
+   <layer name="txt_1_5_5" parent="line_1_5_5" style="txt_menu_thumbnail" txt_1="Accessory Design Workshop" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Accessory Design Workshop" />
+ 
+   <layer name="txt_1_5_7" parent="line_1_5_7" style="txt_menu_thumbnail" txt_1="Master of Design Classroom" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Master of Design Classroom" />
+ 
+   <layer name="txt_1_5_6" parent="line_1_5_6" style="txt_menu_thumbnail" txt_1="Knitwear Design Classroom" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Knitwear Design Classroom" />
+ 
+   <layer name="txt_1_5_8" parent="line_1_5_8" style="txt_menu_thumbnail" txt_1="FashionTechnology Classroom" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="FashionTechnology Classroom" />
+ 
+   <layer name="txt_1_2_5" parent="line_1_2_5" style="txt_menu_thumbnail" txt_1="Resource Centre" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Resource Centre" />
+ 
+   <layer name="txt_1_5_9" parent="line_1_5_9" style="txt_menu_thumbnail" txt_1="Foundation Program Classroom2" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Foundation Program Classroom2" />
+ 
+   <layer name="txt_1_5_10" parent="line_1_5_10" style="txt_menu_thumbnail" txt_1="Fashion Communication Classroom" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Fashion Communication Classroom" />
+ 
+   <layer name="txt_1_5_11" parent="line_1_5_11" style="txt_menu_thumbnail" txt_1="Foundation Program Classroom1" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Foundation Program Classroom1" />
+ 
+   <layer name="txt_1_4_16" parent="line_1_4_16" style="txt_menu_thumbnail" txt_1="Weaving Lab" bgbrightness="1" bgcontrast="1" bgsaturate="1" bghue="0" bginvert="0" bgsepia="0" bgblur="0" text="Weaving Lab" />
+ 
+   <layer name="marker_1_1" parent="line_1_1" style="ic_next" />
+ 
+   <layer name="marker_1_2" parent="line_1_2" style="ic_next" />
+ 
+   <layer name="marker_1_3" parent="line_1_3" style="ic_next" />
+ 
+   <layer name="marker_1_4" parent="line_1_4" style="ic_next" />
+ 
+   <layer name="marker_1_5" parent="line_1_5" style="ic_next" />
+ 
+   
+ 
+ </krpano>

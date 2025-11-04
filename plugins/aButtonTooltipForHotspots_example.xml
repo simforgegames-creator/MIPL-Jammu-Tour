@@ -1,0 +1,57 @@
+<krpano>	<!-- krpano 1.20.7 -->
+
+<layer name="switch_button_hs" type="text" align="lefttop" x="0" y="30" html="Buttons+Hotspot OR only Buttons (optional)" keep="true"
+       css="font-family:Verdana; font-style:italic; font-size:15px; color:#FFFFFF;" padding="5 10"
+       bgcolor="get:skin_settings.design_bgcolor" bgalpha="get:skin_settings.design_bgalpha"  
+	   onclick="toggle(hs_button_tooltip_settings.hs_arrows);loadscene(get(xml.scene), null, get(skin_settings.loadscene_flags), get(blendmode));
+	   if(scale_merker !== null, set(hs_button_tooltip_settings.scale_buttons, get(scale_merker)););
+	   if(hs_button_tooltip_settings.hs_arrows == true, 
+	   set(layer[switch_device_desktop_mobile].visible,true);set(layer[switch_under].visible,true);, , 
+	   set(layer[switch_device_desktop_mobile].visible,false);set(layer[switch_under].visible,false);, 
+	   );"       onover="caller_onover_action(get(name));" onout="caller_onout_action(get(name));"/>
+
+<layer name="disable_enable_on_desktop" type="text" align="lefttop" x="0" y="70" html="Disable/enable on Desktop (optional)" keep="true"
+       css="font-family:Verdana; font-style:italic; font-size:15px; color:#FFFFFF;" padding="5 10"
+       bgcolor="get:skin_settings.design_bgcolor" bgalpha="get:skin_settings.design_bgalpha"
+	   onclick="toggle(hs_button_tooltip_settings.disable_buttons_on_desktop);
+	   	   if(scale_merker !== null, set(hs_button_tooltip_settings.scale_buttons, get(scale_merker)););
+	   loadscene(get(xml.scene),,KEEPVIEW);" 	   
+	   onover="caller_onover_action(get(name));" onout="caller_onout_action(get(name));"/>
+	   
+<layer name="switch_device_desktop_mobile" type="text" align="lefttop" x="0" y="110" html="Switch device Desktop/Mobile (optional)" keep="true"
+       css="font-family:Verdana; font-style:italic; font-size:15px; color:#FFFFFF;" padding="5 10"
+       bgcolor="get:skin_settings.design_bgcolor" bgalpha="get:skin_settings.design_bgalpha"
+	   onclick="
+	   if(scale_merker === null, set(scale_merker,get(hs_button_tooltip_settings.scale_buttons)););
+	   if(devswitch === null OR devswitch == 'desktop', 
+	   set(hs_button_tooltip_settings.scale_buttons,get(scale_merker));
+	   set(devswitch,'mobile'); 
+		,
+	   copy(hs_button_tooltip_settings.scale_buttons,hs_button_tooltip_settings.scale_mobile);
+	   set(hs_button_tooltip_settings.scale_buttons,get(hs_button_tooltip_settings.scale_mobile));
+	   set(devswitch,'desktop'); 	   
+	   );
+	   loadscene(get(xml.scene),,KEEPVIEW);" onover="caller_onover_action(get(name));" onout="caller_onout_action(get(name));"/>  
+
+<layer name="switch_click" type="text" align="lefttop" x="0" y="150" html="Make Tooltip Buttons clickable (optional)" keep="true"
+       css="font-family:Verdana; font-style:italic; font-size:15px; color:#FFFFFF;" padding="5 10"
+       bgcolor="get:skin_settings.design_bgcolor" bgalpha="get:skin_settings.design_bgalpha"
+	   onclick="toggle(hs_button_tooltip_settings.enable_buttons_click);loadscene(get(xml.scene),,KEEPVIEW);" onover="caller_onover_action(get(name));" onout="caller_onout_action(get(name));"/>
+
+<layer name="switch_under" type="text" align="lefttop" x="0" y="190" html="Tooltip Buttons Position (optional)" keep="true"
+       css="font-family:Verdana; font-style:italic; font-size:15px; color:#FFFFFF;" padding="5 10"
+       bgcolor="get:skin_settings.design_bgcolor" bgalpha="get:skin_settings.design_bgalpha"
+	   onclick="switch(hs_button_tooltip_settings.button_position,'normal','below','parallel');loadscene(get(xml.scene),,KEEPVIEW);" onover="caller_onover_action(get(name));" onout="caller_onout_action(get(name));"/>
+
+<!-- <layer name="edge_center" type="text" align="lefttop" x="0" y="230" html="set Hotspot edge center/top (optional)" keep="true" -->
+       <!-- css="font-family:Verdana; font-style:italic; font-size:15px; color:#FFFFFF;" padding="5 10" -->
+       <!-- bgcolor="get:skin_settings.design_bgcolor" bgalpha="get:skin_settings.design_bgalpha" -->
+	   <!-- onclick="toggle(hs_button_tooltip_settings.set_hotspot_edge_center);loadscene(get(xml.scene),,KEEPVIEW);" onover="caller_onover_action(get(name));" onout="caller_onout_action(get(name));"/> -->
+
+
+<!-- caller onover -->
+<action name="caller_onover_action" >	tween(layer[%1].x, 30); </action>
+<action name="caller_onout_action" >	tween(layer[%1].x, 00); </action>
+
+
+</krpano>

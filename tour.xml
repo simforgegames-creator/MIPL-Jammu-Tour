@@ -1,0 +1,1758 @@
+﻿<krpano version="1.21" title="Virtual Tour">
+	<events onloadcomplete="hideloading();" onxmlcomplete="showloading();"/>
+    <action name="showloading">
+        trace('Showing loading screen...');
+        set(layer[loading].visible, true);
+    </action>
+
+    <action name="hideloading">
+        trace('Hiding loading screen...');
+        set(layer[loading].visible, false);
+    </action>
+
+    <layer name="loading" url="Loading.gif" keep="true" align="center" visible="false" />
+	
+	<include url="skin/vtourskin.xml" />
+		 <!-- <include url="menu/plugins/menu_sm.xml" />  -->
+ <!--<include url="menu/plugins/edit_menu_sm.xml" />-->
+        <include url="menu/plugins/photo_sm.xml" /> 
+       <include url="%SWFPATH%/add_hotspot/plugins_l/add_hotspot.xml" /> 
+   <!-- <include url="%SWFPATH%/add_hotspot/plugins_l/editor/add_hotspot_2.xml" /> -->
+      <!-- <include url="%VIEWER%/plugins/showtext.xml" /> -->
+     
+   
+<action name="do_crop_animation" scope="local" args="framewidth, frameheight, framerate">
+<!--  define local variables  -->
+calc(local.xframes, (caller.imagewidth /framewidth) BOR 0); calc(local.frames, xframes * ((caller.imageheight / frameheight) BOR 0)); def(local.frame, integer, 0);
+<!--  set the first frame  -->
+calc(caller.crop, '0|0|' + framewidth + '|' + frameheight);
+<!--  do the animation  -->
+setinterval(calc('crop_anim_' + caller.name), calc(1.0 / framerate), if(caller.loaded, inc(frame); if(frame GE frames, if(caller.onlastframe !== null, callwith(caller, onlastframe() ) ); set(frame,0); ); mod(xpos, frame, xframes); div(ypos, frame, xframes); Math.floor(ypos); mul(xpos, framewidth); mul(ypos, frameheight); calc(caller.crop, xpos + '|' + ypos + '|' + framewidth + '|' + frameheight); ,
+<!--  stop the interval when the hotspot gets removed  -->
+clearinterval(calc('crop_anim_' + caller.name)); ); );
+
+</action>
+	<!-- customize skin settings: maps, gyro, webvr, thumbnails, tooltips, layout, design, ... -->
+	<skin_settings maps="false"
+	               maps_type="google"
+	               maps_bing_api_key=""
+	               maps_google_api_key=""
+	               maps_zoombuttons="false"
+	               maps_loadonfirstuse="true"
+	               gyro="true"
+	               gyro_keeplookingdirection="false"
+	               webvr="false"
+	               webvr_keeplookingdirection="true"
+	               webvr_prev_next_hotspots="true"
+	               autotour="false"
+	               littleplanetintro="false"
+	               followmousecontrol="false"
+	               title="true"
+	               thumbs="true"
+	               thumbs_width="120" thumbs_height="80" thumbs_padding="10" thumbs_crop="0|40|240|160"
+	               thumbs_opened="false"
+	               thumbs_text="false"
+	               thumbs_dragging="true"
+	               thumbs_onhoverscrolling="false"
+	               thumbs_scrollbuttons="false"
+	               thumbs_scrollindicator="false"
+	               thumbs_loop="false"
+	               tooltips_buttons="false"
+	               tooltips_thumbs="false"
+	               tooltips_hotspots="false"
+	               tooltips_mapspots="false"
+	               deeplinking="false"
+	               loadscene_flags="MERGE"
+	               loadscene_blend="OPENBLEND(0.5, 0.0, 0.75, 0.05, linear)"
+	               loadscene_blend_prev="SLIDEBLEND(0.5, 180, 0.75, linear)"
+	               loadscene_blend_next="SLIDEBLEND(0.5,   0, 0.75, linear)"
+	               loadingtext="true"
+	               layout_width="100%"
+	               layout_maxwidth="814"
+	               controlbar_width="-24"
+	               controlbar_height="40"
+	               controlbar_offset="20"
+	               controlbar_offset_closed="-40"
+	               controlbar_overlap.no-fractionalscaling="10"
+	               controlbar_overlap.fractionalscaling="0"
+	               design_skin_images="vtourskin.png"
+	               design_bgcolor="0x2D3E50"
+	               design_bgalpha="0.8"
+	               design_bgborder="0"
+	               design_bgroundedge="1"
+	               design_bgshadow="0 4 10 0x000000 0.3"
+	               design_thumbborder_bgborder="3 0xFFFFFF 1.0"
+	               design_thumbborder_padding="2"
+	               design_thumbborder_bgroundedge="0"
+	               design_text_css="color:#FFFFFF; font-family:Arial;"
+	               design_text_shadow="1"
+	               />
+
+	<!--
+	    For an alternative skin design either change the <skin_settings> values 
+	    from above or optionally include one of the predefined designs from below.
+	-->
+	<!-- <include url="skin/vtourskin_design_flat_light.xml"  /> -->
+	<!-- <include url="skin/vtourskin_design_glass.xml"       /> -->
+	<!-- <include url="skin/vtourskin_design_ultra_light.xml" /> -->
+	<!-- <include url="skin/vtourskin_design_117.xml"         /> -->
+	<!-- <include url="skin/vtourskin_design_117round.xml"    /> -->
+	<!-- <include url="skin/vtourskin_design_black.xml"       /> -->
+
+	<action name="startup" autorun="onstart">
+		playsound(test, audio/Music.mp3, 0);
+
+		if(startscene === null OR !scene[get(startscene)], copy(startscene,scene[0].name); );
+        loadscene(get(startscene), null, MERGE);
+        
+    </action>
+
+    <action name="playaudio">
+        playsound(test, audio/Music.mp3, 0);
+    </action>
+
+    <action name="pauseaudio">
+        pausesound(test);
+    </action>
+
+    <plugin name="soundinterface"
+        keep="true"
+        url="soundinterface.js"
+        preload="true"
+        volume="0.5"
+        mute="false"
+    />
+
+    <layer name="play_button"
+        url="play_button_image.png"
+        align="lefttop"
+        x="20"
+        y="20"
+        onclick="playaudio();"
+    />
+
+    <layer name="pause_button"
+        url="pause_button_image.png"
+        align="lefttop"
+        x="100"
+        y="20"
+        onclick="pauseaudio();"
+    />	
+	   
+	   <action name="toggle_sound">
+		   if(issoundplaying,
+		   playaudio(),
+		   pauseaudio()
+		   );
+		   issoundplaying = !issoundplaying;
+		    toggle_sound_icon();
+	   </action>
+
+	   <action name="toggle_sound_icon">
+		if(issoundplaying,
+			set(layer[skin_btn_mute].url, 'soundoff.png'),
+			set(layer[skin_btn_mute].url, 'skin\soundon.png')
+		);
+	</action>
+	   <var name="issoundplaying" value="false" />
+
+        <action name="do_crop_animation" scope="local" args="framewidth, frameheight, framerate">
+		<!-- define local variables -->
+		calc(local.xframes, (caller.imagewidth /framewidth) BOR 0);
+		calc(local.frames, xframes * ((caller.imageheight / frameheight) BOR 0));
+		def(local.frame, integer, 0);
+		
+		<!-- set the first frame -->
+		calc(caller.crop, '0|0|' + framewidth + '|' + frameheight);
+		
+		<!-- do the animation -->
+		setinterval(calc('crop_anim_' + caller.name), calc(1.0 / framerate),
+			if(caller.loaded,
+				inc(frame);
+				if(frame GE frames, if(caller.onlastframe !== null, callwith(caller, onlastframe() ) ); set(frame,0); );
+				mod(xpos, frame, xframes);
+				div(ypos, frame, xframes);
+				Math.floor(ypos);
+				mul(xpos, framewidth);
+				mul(ypos, frameheight);
+				calc(caller.crop, xpos + '|' + ypos + '|' + framewidth + '|' + frameheight);
+			  ,
+				<!-- stop the interval when the hotspot gets removed -->
+				clearinterval(calc('crop_anim_' + caller.name));
+			);
+		);
+	</action>
+
+	<!-- <layer name="share_button"
+	url="add_hotspot\picture\share.png"
+	align="righttop"
+	x="10"
+	y="10"
+	scale="0.3"
+	ondown="js(showShareOptions())"
+	keep="true" />
+	
+	<layer name="Map_Button"
+	url="add_hotspot/picture/map.png"
+	align="righttop"
+	x="10"
+	y="70"
+	scale="0.45"
+	keep="true"
+	onclick="openGoogleMaps();" /> Added onclick to trigger the action -->
+
+<action name="openGoogleMaps">
+	openurl("https://maps.app.goo.gl/SiJnJ7EXa2Y4DjoG6");
+</action>
+<!-- 
+<layer name="Call_Us_Button"
+	url="add_hotspot/picture/Call.png"
+	align="righttop"
+	x="10"
+	y="140"
+	scale="0.45"
+	keep="true"
+	onclick="OpenNiftWebsite();" /> //Added onclick to trigger the action
+
+	 -->
+
+<action name="OpenNiftWebsite">
+	openurl("url");
+</action>
+
+<layer name="MIPL_Button"
+	type="text"
+	text="Created By MIPL" 
+	bgroundedge="5 5 5 5" 
+	bgshadow="0 0 0 0x000000 0.5" 
+	bgcolor="0x111E4E" 
+	bg="true"
+	width="150.00"
+	backgroundalpha="0.50"
+	height="38" 
+	bgborder="1,1,1,1 16777215 0" 
+	css="font-family:verdana; font-size:16px; color:#ffffff;"
+	textwidth="120"
+	textheight="38" 
+	textalign="center"
+	align="rightbottom"
+	x="10*" 
+	y="10" 
+	keep="true"
+	onclick="OpenMiplWebsite();" />
+
+<action name="OpenMiplWebsite">
+	openurl("http://miplsolns.com/");
+</action>
+<!-- 
+<layer name="Info_Button"
+	url="add_hotspot\picture\meet.png"
+	align="righttop"
+	x="100"
+	y="15"
+	scale=".7"
+	keep="true"
+	onclick="Open_Directoer();" /> // Added onclick to trigger the action 
+
+	 -->
+
+<action name="Open_Directoer">
+	onclick="stopsound(test); skin_loadscene(video_short);"
+</action>
+
+  
+
+    <action name="initialize">
+		
+        set(layer[loading_screen].visible, true);
+    </action>
+
+
+
+
+
+    <action name="show_loading">
+		trace('Showing loading screen...');
+        set(layer[loading].visible, true);
+
+    </action>
+
+    <action name="hide_loading">
+		trace('Hiding loading screen...');
+        set(layer[loading].visible, false);
+    </action>
+
+
+
+    <events onloadcomplete="hideloading(); trace('Panorama load complete');" />
+
+
+
+    
+<layer name="skin_logo" url="add_hotspot\picture\logo1.png" keep="true" scale="1" x="12" y="20"/>
+<action name="startup" devices="html5+css3d|ios" >
+	if(startscene === null, copy(startscene,scene[0].name));
+	loadscene(get(startscene), null, MERGE);
+</action>
+
+<!-- Startup actions effect of little planet, running only for supported platforms -->
+<!-- when the loading is done, wait 2 seconds and then start with the animation to a normal view -->
+<action name="startup" devices="flash|html5+webgl" >
+	if(startscene === null, copy(startscene,scene[0].name));
+	set(display.flash10, off);
+	loadscene(get(startscene)); 
+	set(view.stereographic,true); 
+	set(view.fisheye, 1.0); 
+	set(view.fov, 155); 
+	set(view.fovtype, VFOV); 
+	set(view.fovmax, 150); 
+	set(view.hlookat, -165); 
+	set(view.vlookat, 77);
+	set(hotspot[hsp_0_4].alpha, 0.0); 
+	set(hotspot[hsp_0_2].alpha, 0.0); 
+	set(hotspot[hsp_0_3].alpha, 0.0); 
+	set(hotspot[hsp_0_1].alpha, 0.0); 
+	set(hotspot[hsp_0_5].alpha, 0.0); 
+	set(hotspot[hsp_0_6].alpha, 0.0); 
+	set(hotspot[hsp_0_7].alpha, 0.0); 
+	set(hotspot[hsp_0_8].alpha, 0.0); 
+	set(hotspot[hsp_0_9].alpha, 0.0); 
+	set(hotspot[hsp_new].alpha, 0.0); 
+	set(hotspot[spot_5].alpha, 0.0); 
+	set(hotspot[spot_4].alpha, 0.0); 
+	set(hotspot[spot_3].alpha, 0.0); 
+	set(hotspot[spot_2].alpha, 0.0); 
+	set(hotspot[spot_1].alpha, 0.0);
+	
+	
+	<!-- Keep hotspots hidden initially -->
+	set(autorotate.enabled,false);
+	wait(blend);
+	delayedcall(2, normalview() );
+</action>
+
+<!-- Set to normal view -->
+<action name="normalview">
+	tween(view.hlookat, 10, 2.5, easeInOutQuad);
+	tween(view.vlookat, 0, 2.5, easeInOutQuad);
+	tween(view.fov, 65, 2.5, easeInOutQuad);
+	tween(view.fisheye, 0.0, 2.5, easeInOutQuad);
+	wait(1); <!-- Ensure all transitions complete before showing hotspots -->
+	<!-- Show hotspots after transition -->
+	tween(hotspot[hsp_0_4].alpha,  1.0, 1.0, easeInOutQuad); 
+	tween(hotspot[hsp_0_2].alpha,  1.0, 1.0, easeInOutQuad); 
+	tween(hotspot[hsp_0_3].alpha, 1.0, 1.0, easeInOutQuad); 
+	tween(hotspot[hsp_0_1].alpha, 1.0, 1.0, easeInOutQuad); 
+	tween(hotspot[hsp_0_5].alpha, 1.0, 1.0, easeInOutQuad); 
+	tween(hotspot[hsp_0_6].alpha, 1.0, 1.0, easeInOutQuad); 
+	tween(hotspot[hsp_0_7].alpha, 1.0, 1.0, easeInOutQuad); 
+	tween(hotspot[hsp_0_8].alpha, 1.0, 1.0, easeInOutQuad); 
+	tween(hotspot[hsp_0_9].alpha, 1.0, 1.0, easeInOutQuad); 
+	tween(hotspot[hsp_new].alpha, 1.0, 1.0, easeInOutQuad); 
+	tween(hotspot[spot_5].alpha, 1.0, 1.0, easeInOutQuad);  
+	tween(hotspot[spot_4].alpha, 1.0, 1.0, easeInOutQuad);  
+	tween(hotspot[spot_3].alpha, 1.0, 1.0, easeInOutQuad); 
+	tween(hotspot[spot_2].alpha, 1.0, 1.0, easeInOutQuad);  
+	tween(hotspot[spot_1].alpha, 1.0, 1.0, easeInOutQuad); 
+	set(display.details, 24);
+	set(display.flash10, on);
+	set(view.fovmax, 135);
+</action>
+
+<!-- Start autorotate and play sound globally for tour -->
+<events name="currentpano" keep="true" 
+		onnewpano="set(autorotate.enabled, true);
+					playsound(test, audio/Music.mp3, 0);
+		set(events[currentpano].onnewpano, null);" 
+		/>					
+					
+<!-- Autorotate -->
+<autorotate enabled="false"
+		waittime="3.0"
+		accel="0.5"
+		speed="6.0"
+		horizon="0.0"
+		tofov="100"
+		/>
+
+
+
+
+<scene name="scene_DJI_0088_sky-2" title="Aerial View 1"  onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/newhall.jpg">
+		
+
+	<view fov="90" vlookat="0" hlookat="10" />
+    <!-- Define the controls and preview -->
+    <preview url="panos/newhall.jpg" />
+
+    <!-- Define the image for the scene -->
+    <image>
+        <sphere url="panos/newhall.jpg" />
+		
+    </image>
+
+	<hotspot name="hsp_0_4" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_Amphitheatre);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+	<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down"  x="0" y="100" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Ampthitheatre" parent="hotspot[hsp_0_4]"/>
+
+
+	</scene>
+	
+<scene name="scene_DJI_0088_sky-3" title="Aerial View 2"  onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/newhall.jpg">
+		
+
+	<view fov="90" vlookat="0" hlookat="10" />
+    <!-- Define the controls and preview -->
+    <preview url="panos/newhall.jpg" />
+
+    <!-- Define the image for the scene -->
+    <image>
+        <sphere url="panos/newhall.jpg" />
+		
+    </image>
+
+	<hotspot name="hsp_0_4" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_Amphitheatre);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+	<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down"  x="0" y="100" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Ampthitheatre" parent="hotspot[hsp_0_4]"/>
+
+
+	</scene>
+<!-- 
+<scene name="scene_DJI_0088_sky-2" title="Aerial View 1"  onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/DJI_0088_sky-2.tiles/thumb.jpg" lat="12.91264864" lng="77.65209847" alt="927.41" heading="0.0">
+		
+
+	<view fov="90" vlookat="0" hlookat="10" />
+    <control bouncinglimits="calc:image.cube ? true : false" />
+    <preview url="panos/DJI_0088_sky-2.tiles/preview.jpg" />
+
+    <image>
+        <cube url="panos/DJI_0088_sky-2.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1152,2304,4608" />
+		
+    </image>
+
+	
+
+		
+<hotspot name="hsp_0_4" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_Amphitheatre);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down"  x="0" y="100" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Ampthitheatre" parent="hotspot[hsp_0_4]"/>
+
+<hotspot name="hsp_0_2" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_Auditorium_Outside);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="30" atv="13" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+<layer name="text2" url="textfield.swf" width="150.00" backgroundalpha="0.50" align="down"  x="0" y="100" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Auditorium" parent="hotspot[hsp_0_2]"/>
+
+<hotspot name="hsp_0_3" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_Director_s_Cabin_and_Conferrence_Room);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="17" atv="15.5" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+<layer name="text3" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="100" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Block A" parent="hotspot[hsp_0_3]"/>
+
+<hotspot name="hsp_0_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);"  onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="-12.312" atv="10.12" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+<layer name="text1" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="100" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Block B" parent="hotspot[hsp_0_1]"/>
+
+<hotspot name="hsp_0_5" style="link_hs_sm" onout="tween(scale,0.34,0.1);"  onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="-19.776" atv="6.141" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+<layer name="text5" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="100" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Block C" parent="hotspot[hsp_0_5]"/>
+
+<hotspot name="hsp_0_6" style="link_hs_sm" onout="tween(scale,0.34,0.1);"  onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="-25.201" atv="3.608" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+<layer name="text6" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="100" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Block D" parent="hotspot[hsp_0_6]"/>
+
+<hotspot name="hsp_0_7" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" onclick="skin_loadscene(scene_Hostel_Room);"  scale="0.34" ath="0" atv="0" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+<layer name="text7" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="100" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Hostel" parent="hotspot[hsp_0_7]"/>
+
+<hotspot name="hsp_0_8" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_New_Building_Outside_View);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="18.603" atv="-2.712" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+<layer name="text8" url="textfield.swf" width="180.00" backgroundalpha="0.50" align="down"  x="0" y="100" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="New Building" parent="hotspot[hsp_0_8]"/>
+
+<hotspot name="hsp_0_9" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_Drone_view_2_final);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="-14" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+<layer name="text9" url="textfield.swf" width="180.00" backgroundalpha="0.50" align="down"  x="0" y="100" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Aerial view 2" parent="hotspot[hsp_0_9]"/>
+
+
+<hotspot name="hsp_new" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_Main_Gate);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="25.315" atv="49.92" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+<layer name="text_new_1" url="textfield.swf" width="180.00" backgroundalpha="0.50" align="down"  x="0" y="100" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Main Gate" parent="hotspot[hsp_new]"/>
+<hotspot name="spot_2" style= "link_hs_sm"  url="add_hotspot\picture\pin.png" ath="107.895" atv="-7.829"  scale="1" zoom="false" />
+<layer name="text_2" url="textfield.swf" width="300.00" backgroundalpha="0.50" align="right" y="0" x="-300" height="76" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:16px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0xff0000" bg="false" textwidth="120" textheight="38" textalign="center" text="Bannerghatta National Park, Bengaluru, 20Kms From NTFT Campus" parent="hotspot[spot_2]"/>
+
+
+<hotspot name="spot_3" style= "link_hs_sm" url="add_hotspot\picture\pin.png"   ath="140.22" atv="-18.566"  scale="1" zoom="false" />
+<layer name="text_3" url="textfield.swf" width="300.00" backgroundalpha="0.50" align="right" y="0" x="-300" height="76" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:16px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0xff0000" bg="false" textwidth="120" textheight="38" textalign="center" text="Majestic Railway Station, Bengaluru, 15Kms From NIFT Campus" parent="hotspot[spot_3]"/>
+
+<hotspot name="spot_4" style= "link_hs_sm" url="add_hotspot\picture\pin.png"   ath="-176.7577" atv="-8.94"  scale="1" zoom="false" />
+<layer name="text_4" url="textfield.swf" width="300.00" backgroundalpha="0.50" align="right"  y="0" x="-300" height="76" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:16px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0xff0000" bg="false" textwidth="120" textheight="38" textalign="center" text="ChinnaSwamy Stadium" parent="hotspot[spot_4]"/>
+
+<hotspot name="spot_5" style= "link_hs_sm" url="add_hotspot\picture\pin.png" ath="-151.0110" atv="-2.225" scale="1" zoom="false" />
+<layer name="text_5" url="textfield.swf" width="300.00" backgroundalpha="0.50" align="right"  y="0" x="-300" height="76" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:16px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0xff0000" bg="false" textwidth="120" textheight="38" textalign="center" text="Kempegowda International Airport, Bengaluru" parent="hotspot[spot_5]"/>
+
+	</scene>  -->
+	<scene name="scene_2nd_Floor_Main_Building" title="2nd Floor Main Building"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/2nd_Floor_Main_Building.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/2nd_Floor_Main_Building.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/2nd_Floor_Main_Building.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+		<hotspot name="spot103" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"   ath="-23.4991" atv="9.8699"  onclick="skin_loadscene(scene_GC_Lab_2);" scale="0.40" zoom="false" />
+		<layer name="text114" url="textfield.swf" width="350.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Garment Construction Lab" parent="hotspot[spot103]"/>
+
+		<hotspot name="spot104" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"   ath="-25.9900" atv="17.6228"  onclick="skin_loadscene(scene_Pattern_Making_Lab_2);" scale="0.40" zoom="false" />
+		<layer name="text115" url="textfield.swf" width="300.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Pattern Making Lab" parent="hotspot[spot104]"/>
+		
+		<hotspot name="spot105" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="29.5208" atv="11.1962"   onclick="skin_loadscene(scene_Draping_Lab);" scale="0.40" zoom="false" />
+		<layer name="text116" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Draping Lab" parent="hotspot[spot105]"/>
+		
+		<hotspot name="spot106" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"   ath="29.1003" atv="19.1016"   onclick="skin_loadscene(scene_GC_Lab_1);" scale="0.40" zoom="false" />
+		<layer name="text117" url="textfield.swf" width="350.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Garment Construction Lab" parent="hotspot[spot106]"/>
+		
+		<hotspot name="spot107" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"   ath="29.8423" atv="28.5884"   onclick="skin_loadscene(scene_FD_Classroom);" scale="0.40" zoom="false" />ath="173.4697" atv="6.5431"
+		<layer name="text118" url="textfield.swf" width="300.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Fashion Designing Classroom" parent="hotspot[spot107]"/>
+		
+		<hotspot name="spot108" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="46.8583" atv="-4.7843"  onclick="skin_loadscene(scene_3rd_Floor_Main_Building);" scale="0.40" zoom="false" />
+		<layer name="text119" url="textfield.swf" width="150.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="3rd Floor" parent="hotspot[spot108]"/>
+		
+		<hotspot name="spot109" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="46.8989" atv="3.4338"  onclick="skin_loadscene(scene_1st_Floor_Main_Building);" scale="0.40" zoom="false" />
+		<layer name="text120" url="textfield.swf" width="150.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="1st Floor" parent="hotspot[spot109]"/>
+		
+		<hotspot name="spot110" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="46.6005" atv="12.7955"  onclick="skin_loadscene(scene_Ground_Floor);" scale="0.40" zoom="false" />
+		<layer name="text121" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Ground Floor" parent="hotspot[spot110]"/>
+
+		<hotspot name="spot111" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="96.7970" atv="19.7317"  onclick="skin_loadscene(scene_Weaving_Studio);" scale="0.40" zoom="false" />
+		<layer name="text122" url="textfield.swf" width="250.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Weaving Lab" parent="hotspot[spot111]"/>
+
+		
+		<hotspot name="hsp_1_4" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="2.1980" atv="88.8372" distorted="true" install_onclick="5" />
+        	</scene>
+
+
+	<scene name="scene_1st_Floor_Main_Building" title="1st Floor Main Building"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/1st_Floor_Main_Building.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/1st_Floor_Main_Building.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/1st_Floor_Main_Building.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+		
+		<hotspot name="spot86" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="-35.5158" atv="-2.7959" onclick="skin_loadscene(scene_2nd_Floor_Main_Building);" scale="0.40" zoom="false" />
+		<layer name="text96" url="textfield.swf" width="150.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="2nd Floor" parent="hotspot[spot86]"/>
+		
+		<hotspot name="spot87" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"   ath="-37.1090" atv="19.5981" onclick="skin_loadscene(scene_Design_Labs);" scale="0.40" zoom="false" />
+		<layer name="text97" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="IT Department" parent="hotspot[spot87]"/>
+		
+		<hotspot name="spot88" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"   ath="-36.1296" atv="8.7343" onclick="skin_loadscene(scene_Ground_Floor);" scale="0.40" zoom="false" />
+		<layer name="text98" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Ground Floor" parent="hotspot[spot88]"/>
+		
+		<hotspot name="spot89" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="-85.8186" atv="13.2521" onclick="skin_loadscene(scene_TD_Department);" scale="0.40" zoom="false" />
+		<layer name="text100" url="textfield.swf" width="350.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Textile Design Department" parent="hotspot[spot89]"/>
+	
+		<hotspot name="spot90" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="165.6108" atv="15.1147" onclick="skin_loadscene(scene_Pattern_Making_Lab);" scale="0.40" zoom="false" />
+		<layer name="text101" url="textfield.swf" width="250.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Pattern Making Lab" parent="hotspot[spot90]"/>
+		
+		<hotspot name="spot91" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="167.0543" atv="22.9140"  onclick="skin_loadscene(scene_C13_Art_Room);" scale="0.40" zoom="false" />
+		<layer name="text102" url="textfield.swf" width="300.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Knitwear Classroom" parent="hotspot[spot91]"/>
+		
+		<hotspot name="spot92" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="74.0052" atv="11.0645"  onclick="skin_loadscene(scene_J3_Classroom);" scale="0.40" zoom="false" />
+		<layer name="text103" url="textfield.swf" width="350.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Master of Design Classroom" parent="hotspot[spot92]"/>
+
+		<hotspot name="hsp_2_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="2.1980" atv="88.8372" distorted="true" install_onclick="5" />
+	</scene>
+
+	
+
+
+	<scene name="scene_3rd_Floor_Main_Building" title="3rd Floor Main Building"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/3rd_Floor_Main_Building.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/3rd_Floor_Main_Building.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/3rd_Floor_Main_Building.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+<!-- fc classromm -->
+		<hotspot name="spot117" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"   ath="167.5216" atv="18.8626"  onclick="skin_loadscene(FC);" scale="0.40" zoom="false" />
+		<layer name="text128" url="textfield.swf" width="300.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Fashion Communication Classroom" parent="hotspot[spot117]"/>
+		
+		<hotspot name="spot118" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="60.5435" atv="2.9463"   onclick="skin_loadscene(scene_C33);" scale="0.40" zoom="false" />
+		<layer name="text129" url="textfield.swf" width="300.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Foundation program Classroom 2" parent="hotspot[spot118]"/>
+
+		<hotspot name="spot119" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="-165.4868" atv="17.1255"  onclick="skin_loadscene(scene_C34_Photography_Lab);" scale="0.40" zoom="false" />
+		<layer name="text130" url="textfield.swf" width="250.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff; " bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Photography Lab" parent="hotspot[spot119]"/>
+
+		<hotspot name="spot120" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"   ath="-179.344" atv="-4.409"  onclick="skin_loadscene(scene_2nd_Floor_Main_Building);" scale="0.40" zoom="false" />
+		<layer name="text131" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="2nd Floor" parent="hotspot[spot120]"/>
+
+		<hotspot name="spot121" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="-179.64" atv="3.297"   onclick="skin_loadscene(scene_1st_Floor_Main_Building);" scale="0.40" zoom="false" />
+		<layer name="text132" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="1st Floor" parent="hotspot[spot121]"/>
+
+		<hotspot name="spot122" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="-179.599" atv="11.059"   onclick="skin_loadscene(scene_Ground_Floor);" scale="0.40" zoom="false" />
+		<layer name="text133" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Ground Floor" parent="hotspot[spot122]"/>
+
+		<hotspot name="hsp_3_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="2.1980" atv="88.8372" distorted="true" install_onclick="5" />
+	</scene>
+
+	<scene name="scene_Accessory_Design_Classroom" title="Accessory Design Classroom"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/Accessory_Design_Classroom.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Accessory_Design_Classroom.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Accessory_Design_Classroom.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+<hotspot name="spot70" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="129.2532" atv="2.7234" onclick="skin_loadscene(scene_Main_Building_Ground_Floor);" scale="0.40" zoom="false" />
+<layer name="text79" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot70]"/>
+
+<hotspot name="hsp_NEW" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="2.1980" atv="88.8372" distorted="true" install_onclick="5" />
+	</scene>
+
+	<scene name="scene_Accessory_Design_Workshop" title="Accessory Design Workshop"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/Accessory_Design_Workshop.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Accessory_Design_Workshop.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Accessory_Design_Workshop.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+<hotspot name="spot71" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="-2.6653" atv="-3.4183" onclick="skin_loadscene(scene_Main_Building_Ground_Floor);" scale="0.40" zoom="false" />
+<layer name="text80" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot71]"/>
+
+<hotspot name="hsp_5_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="2.1980" atv="88.8372" distorted="true" install_onclick="5" />
+	</scene>
+
+	<scene name="scene_Accessory_Machine_Workshop" title="Accessory Machine Workshop"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/Accessory_Machine_Workshop.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Accessory_Machine_Workshop.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Accessory_Machine_Workshop.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+<hotspot name="spot72" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="-47.3326" atv="0.3955" onclick="skin_loadscene(scene_Main_Building_Ground_Floor);" scale="0.40" zoom="false" />
+<layer name="text81" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot72]"/>
+
+<hotspot name="hsp_6_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="2.1980" atv="88.8372" distorted="true" install_onclick="5" />
+	</scene>
+
+	<scene name="scene_Accounts_Department" title="Accounts Department"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/Accounts_Department.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Accounts_Department.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Accounts_Department.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+<hotspot name="spot28" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="96.1400" atv="0.8758" onclick="skin_loadscene(scene_Campus_Entrance);" scale="0.40" zoom="false" />
+<layer name="text36" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot28]"/>
+	
+<hotspot name="hsp_7_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.686" ath="-100.8032" atv="89.7298" distorted="true" install_onclick="5" />
+	</scene>
+
+	<scene name="scene_Amphitheatre" title="Amphitheatre"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/Amphitheatre.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Amphitheatre.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Amphitheatre.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+<hotspot name="spot50" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"   ath="179.4689" atv="15.9344" onclick="skin_loadscene(scene_To_main_building_and_amphitheatre);" scale="0.40" zoom="false" />
+<layer name="text58" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Ground Floor" parent="hotspot[spot50]"/>
+	
+<hotspot name="spot51" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="86.2741" atv="14.0588" onclick="skin_loadscene(scene_New_Building_Outside_View);" scale="0.40" zoom="false" />
+<layer name="text59" url="textfield.swf" width="300.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="New Building" parent="hotspot[spot51]"/>
+
+<hotspot name="hsp_8_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="2.846" ath="138.3937" atv="89.8848" distorted="true" install_onclick="5" />
+	</scene>
+
+	<scene name="scene_Auditorium_Inside" title="Auditorium Inside"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/Auditorium_Inside.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Auditorium_Inside.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Auditorium_Inside.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+<hotspot name="spot13" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="52.8077" atv="-7.8945" onclick="skin_loadscene(scene_Auditorium_Outside);" scale="0.40" zoom="false" />
+<layer name="text21" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="34" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot13]"/>
+<hotspot name="hsp_9_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.092" ath="-156.1373" atv="88.4355" distorted="true" install_onclick="5" />
+
+	</scene>
+
+	<scene name="scene_Auditorium_Outside" title="Auditorium Outside"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/Auditorium_Outside.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Auditorium_Outside.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Auditorium_Outside.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+<hotspot name="spot11" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="160.5587" atv="-1.7529" onclick="skin_loadscene(scene_Auditorium_Inside);" scale="0.40" zoom="false" />
+<layer name="text19" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Auditorium" parent="hotspot[spot11]"/>
+
+<hotspot name="spot12" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="124.4743" atv="4.4046" onclick="skin_loadscene(scene_New_Building_Outside_View);" scale="0.40" zoom="false" />
+<layer name="text20" url="textfield.swf" width="300.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Amphitheater And New Building" parent="hotspot[spot12]"/>
+
+<hotspot name="spot14" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="11.6868" atv="9.2567" onclick="skin_loadscene(scene_Entrance_View);" scale="0.40" zoom="false" />
+<layer name="text22" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Entrance" parent="hotspot[spot14]"/>
+<hotspot name="hsp_10_2" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.686" ath="-7.6251" atv="88.3587" distorted="true" install_onclick="5" />
+	</scene>
+
+
+	<scene name="scene_B9_Material_Lab" title="B9 Material Lab"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/B9_Material_Lab.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/B9_Material_Lab.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/B9_Material_Lab.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+		<hotspot name="hsp_12_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="2.1980" atv="88.8372" distorted="true" install_onclick="5" />
+<hotspot name="spot36" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="-144.9415" atv="3.8418" onclick="skin_loadscene(scene_Ground_Floor);" scale="0.40" zoom="false" />
+<layer name="text44" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot36]"/>
+
+	</scene>
+
+	<scene name="scene_Basketball_Court" title="Basketball Court"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/Basketball_Court.tiles/thumb.jpg" lat="12.91230556" lng="77.65211111" alt="812.50" heading="0.0">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Basketball_Court.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Basketball_Court.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048" />
+		</image>
+
+<hotspot name="spot9" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="-14.8610" atv="9.6301" onclick="skin_loadscene(scene_Auditorium_Outside);" scale="0.40" zoom="false" />
+<layer name="text17" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Auditorium" parent="hotspot[spot9]"/>
+
+<hotspot name="spot10" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="-143.2180" atv="18.2252" onclick="skin_loadscene(scene_Main_Gate);" scale="0.40" zoom="false" />
+<layer name="text18" url="textfield.swf" width="150.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Main Gate" parent="hotspot[spot10]"/>
+<hotspot name="hsp_13_2" style="link_hs_sm" width="305.80" ox="0.10" oy="89.40" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="1" ath="24.9013" atv="80.5381" distorted="true" install_onclick="5" />
+	</scene>
+
+	<scene name="scene_C13_Art_Room" title="C13 Art Room"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/C13_Art_Room.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/C13_Art_Room.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/C13_Art_Room.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+		<hotspot name="spot94" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"   ath="-139.2689" atv="4.2324"   onclick="skin_loadscene(scene_1st_Floor_Main_Building);" scale="0.40" zoom="false" />
+		<layer name="text105" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot94]"/>
+		<hotspot name="hsp_14_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="2.1980" atv="88.8372" distorted="true" install_onclick="5" />
+
+	</scene>
+
+
+
+	<scene name="scene_C32" title="C32"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/C32.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/C32.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/C32.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+<hotspot name="spot37" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="110.9130" atv="6.0365" onclick="skin_loadscene(scene_Ground_Floor);" scale="0.40" zoom="false" />
+<layer name="text45" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot37]"/>
+<hotspot name="hsp_16_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="2.1980" atv="88.8372" distorted="true" install_onclick="5" />
+	</scene>
+
+
+
+	<scene name="FC" title="FC"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/FC2.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/FC2.tiles/preview.jpg" />
+
+		<image>
+			<sphere url="panos/FC2.tiles/l%l/%0v/l%l_%0v_%0h.jpg" multires="512,1536x768,3072x1536,6144x3072,12032x6016" />
+		</image>
+
+		<hotspot name="spot37" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="-95.1250" atv="-0.6476" onclick="skin_loadscene(scene_3rd_Floor_Main_Building);" scale="0.40" zoom="false" />
+		<layer name="text45" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot37]"/>
+		<hotspot name="hsp_16_2" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="2.1980" atv="88.8372" distorted="true" install_onclick="5" />
+	</scene>
+
+	<scene name="scene_C34_Photography_Lab" title="C34 Photography Lab"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/C34_Photography_Lab.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/C34_Photography_Lab.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/C34_Photography_Lab.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+		<hotspot name="spot__2" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="-55.7409" atv="4.8490" onclick="skin_loadscene(scene_3rd_Floor_Main_Building);" scale="0.40" zoom="false" />
+		<layer name="text__2" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot__2]"/>
+		
+		<hotspot name="hsp_17_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="-34.7877" atv="88.4981" distorted="true" install_onclick="5" />
+
+	</scene>
+
+	<scene name="scene_Campus_Entrance" title="Campus Entrance"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/Campus_Entrance.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Campus_Entrance.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Campus_Entrance.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+		
+<hotspot name="spot25" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="43.6581" atv="18.6113" onclick="skin_loadscene(scene_Accounts_Department);" scale="0.40" zoom="false" />
+<layer name="text33" url="textfield.swf" width="380.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Administration And Accounts" parent="hotspot[spot25]"/>
+
+<hotspot name="spot26" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="-25.1028" atv="-8.4199" onclick="skin_loadscene(scene_Ground_Floor);" scale="0.40" zoom="false" />
+<layer name="text34" url="textfield.swf" width="230.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Ground Floor" parent="hotspot[spot26]"/>
+	
+<hotspot name="spot27" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="175.8159" atv="11.0477" onclick="skin_loadscene(scene_Campus_View);" scale="0.40" zoom="false" />
+<layer name="text35" url="textfield.swf" width="230.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Campus" parent="hotspot[spot27]"/>
+<hotspot name="hsp_18_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.686" ath="-7.6251" atv="88.3587" distorted="true" install_onclick="5" />
+	</scene>
+
+	<scene name="scene_Campus_View" title="Campus View"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/Campus_View.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Campus_View.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Campus_View.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+<hotspot name="spot15" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="138.8775" atv="12.0785" onclick="skin_loadscene(scene_Entrance_View);" scale="0.40" zoom="false" />
+<layer name="text23" url="textfield.swf" width="180.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Entrance" parent="hotspot[spot15]"/>
+
+<hotspot name="spot16" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="11.6868" atv="9.2567" onclick="skin_loadscene(scene_Campus_Entrance);" scale="0.40" zoom="false" />
+<layer name="text24" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Reception" parent="hotspot[spot16]"/>
+
+<hotspot name="spot17" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="-0.9408" atv="3.8439" onclick="skin_loadscene(scene_Ground_Floor);" scale="0.40" zoom="false" />
+<layer name="text25" url="textfield.swf" width="230.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Ground Floor" parent="hotspot[spot17]"/>
+
+<hotspot name="spot18" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="-36.8474" atv="6.3637" onclick="skin_loadscene(scene_Knitting_Labs);" scale="0.40" zoom="false" />
+<layer name="text26" url="textfield.swf" width="250.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Knitting Design Lab" parent="hotspot[spot18]"/>
+<hotspot name="hsp_19_2" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.686" ath="-7.6251" atv="88.3587" distorted="true" install_onclick="5" />
+	</scene>
+
+	<scene name="scene_Canteen" title="Canteen"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/Canteen.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Canteen.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Canteen.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+		<hotspot name="spot80" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="131.9169" atv="8.4042" onclick="skin_loadscene(scene_Main_Building_Ground_Floor_2);" scale="0.40" zoom="false" />
+		<layer name="text89" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot80]"/>
+		<hotspot name="hsp_20_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="2.1980" atv="88.8372" distorted="true" install_onclick="5" />
+	</scene>
+
+	<scene name="scene_Circular_Knitting_Lab" title="Circular Knitting Lab"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/Circular_Knitting_Lab.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Circular_Knitting_Lab.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Circular_Knitting_Lab.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+		
+<hotspot name="spot23" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="-106.1807" atv="15.7189" onclick="skin_loadscene(scene_Knitting_Labs);" scale="0.40" zoom="false" />
+<layer name="text31" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot23]"/>
+<hotspot name="hsp_21_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.686" ath="-7.6251" atv="88.3587" distorted="true" install_onclick="5" />
+	</scene>
+
+	<scene name="scene_Computorised_Knitting_Lab" title="Computorised Knitting Lab"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/Computorised_Knitting_Lab.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Computorised_Knitting_Lab.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Computorised_Knitting_Lab.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+<hotspot name="spot24" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="97.7287" atv="8.5765" onclick="skin_loadscene(scene_Knitting_Labs);" scale="0.40" zoom="false" />
+<layer name="text32" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot24]"/>
+<hotspot name="hsp_22_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.686" ath="43.2263" atv="88.9524" distorted="true" install_onclick="5" />
+	</scene>
+
+	<scene name="scene_Conference_Room" title="Conference Room"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/Conference_Room.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Conference_Room.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Conference_Room.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+<hotspot name="spot49" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="56.4574" atv="-0.8636" onclick="skin_loadscene(scene_Director_s_Cabin_and_Conferrence_Room);" scale="0.40" zoom="false" />
+<layer name="text57" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot49]"/>
+<hotspot name="hsp_23_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.686" ath="73.3205" atv="88.4814" distorted="true" install_onclick="5" />
+	</scene>
+
+	<scene name="scene_Design_Labs" title="Design Labs"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/Design_Labs.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Design_Labs.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Design_Labs.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+<hotspot name="spot81" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="-56.9814" atv="4.4582" onclick="skin_loadscene(scene_Main_Building_Ground_Floor_2);" scale="0.40" zoom="false" />
+<layer name="text90" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot81]"/>
+
+<hotspot name="spot82" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="148.6145" atv="20.9338" onclick="skin_loadscene(scene_IT_Lab_D11);" scale="0.40" zoom="false" />
+<layer name="text91" url="textfield.swf" width="150.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Mac Lab" parent="hotspot[spot82]"/>
+
+<hotspot name="spot83" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="179.1969" atv="20.7188" onclick="skin_loadscene(scene_IT_Lab_D12);" scale="0.40" zoom="false" />
+<layer name="text92" url="textfield.swf" width="180.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Design Lab" parent="hotspot[spot83]"/>
+<hotspot name="hsp_24_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="2.1980" atv="88.8372" distorted="true" install_onclick="5" />
+	</scene>
+
+	
+	<scene name="scene_C33" title="C33"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/C32.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/C32.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/C32.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+<hotspot name="spot_1" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="110.9130" atv="6.0365" onclick="skin_loadscene(scene_3rd_Floor_Main_Building);" scale="0.40" zoom="false" />
+<layer name="text_1" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot_1]"/>
+<hotspot name="hsp_25_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="11.7646" atv="89.8490" distorted="true" install_onclick="5" />
+	</scene>
+
+	<scene name="scene_Director_s_Cabin_and_Conferrence_Room" title="Director_s Cabin and Conferrence Room"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/Director_s_Cabin_and_Conferrence_Room.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="100" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Director_s_Cabin_and_Conferrence_Room.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Director_s_Cabin_and_Conferrence_Room.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+<!--Director Video-->
+<hotspot name="spot43" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" rotate="-16.5" ath="130.0916" atv="25.2093" onclick="stopsound(test); skin_loadscene(video_short);" scale="0.40" zoom="false" />
+<layer name="text51" url="textfield.swf" width="300.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Directoer's Office" parent="hotspot[spot43]"/>
+
+<hotspot name="spot44" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="-132.0087" atv="27.2403" onclick="skin_loadscene(scene_Conference_Room);" scale="0.40" zoom="false" />
+<layer name="text52" url="textfield.swf" width="250.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Conference Room" parent="hotspot[spot44]"/>
+
+<hotspot name="spot45" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="21.5769" atv="21.0180" rotate="-16.5" onclick="skin_loadscene(scene_Ground_Floor);" scale="0.40" zoom="false" />
+<layer name="text53" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Ground Floor" parent="hotspot[spot45]"/>
+
+<hotspot name="spot46" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="-72.5236" atv="26.1077" rotate="22" onclick="skin_loadscene(scene_Accounts_Department);" scale="0.40" zoom="false" />
+<layer name="text54" url="textfield.swf" width="280.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Account Department" parent="hotspot[spot46]"/>
+
+<hotspot name="spot47" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="-88.5606" atv="13.8272" onclick="skin_loadscene(scene_VC_Room);" scale="0.40" zoom="false" />
+<layer name="text55" url="textfield.swf" width="300.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Video Conference Room" parent="hotspot[spot47]"/>
+<hotspot name="hsp_26_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="2.905" ath="154.1741" atv="87.7686" distorted="true" install_onclick="5" />
+
+	</scene>
+
+
+
+	<scene name="scene_Draping_Lab" title="Draping Lab"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/Draping_Lab.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Draping_Lab.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Draping_Lab.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+		<hotspot name="spot115" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="38.2413" atv="4.3877"  onclick="skin_loadscene(scene_2nd_Floor_Main_Building);" scale="0.40" zoom="false" />
+		<layer name="text126" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot115]"/>
+		<hotspot name="hsp_28_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="2.1980" atv="88.8372" distorted="true" install_onclick="5" />
+
+	</scene>
+
+
+	<scene name="scene_Drone_view_2_final" title="Drone view 2 final"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/Drone_view_2_final.tiles/thumb.jpg" lat="12.91190200" lng="77.65268628" alt="919.47" heading="0.0">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="90" vlookat="20" fovtype="MFOV" fov="150" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Drone_view_2_final.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Drone_view_2_final.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1152,2304,4608" />
+		</image>
+
+		<hotspot name="hsp_1_2" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_Auditorium_Outside);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="106.369" atv="9.994" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text_1_2" url="textfield.swf" width="150.00" backgroundalpha="0.50" align="down"  x="0" y="100" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Auditorium" parent="hotspot[hsp_1_2]"/>
+		
+		<hotspot name="hsp_1_3" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_Ground_Floor);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="140.446" atv="12.013" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text_1_3" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="100" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Block A" parent="hotspot[hsp_1_3]"/>
+		
+		<hotspot name="hsp_1_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);"  onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="-164.053" atv="4.333" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text_1_1" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="100" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Block B" parent="hotspot[hsp_1_1]"/>
+		
+		<hotspot name="Hot_Spot_001" style="link_hs_sm" onout="tween(scale,0.34,0.1);"  onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="-134.339" atv="6.503"  install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="Text_002" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="100" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Block C" parent="hotspot[Hot_Spot_001]"/>
+
+		
+		<hotspot name="hsp_1_6" style="link_hs_sm" onout="tween(scale,0.34,0.1);"  onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="-70.992" atv="3.708" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text_1_6" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="100" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Block D" parent="hotspot[hsp_1_6]"/>
+		
+		<hotspot name="hsp_1_7" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" onclick="skin_loadscene(scene_Hostel_Room);" scale="0.34" ath="4.595" atv="-11.183" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text_1_7" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="100" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Hostel" parent="hotspot[hsp_1_7]"/>
+		
+		<hotspot name="hsp_1_8" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_New_Building_Outside_View);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false"  scale="0.34" ath="70.551" atv="-17.258" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text_1_8" url="textfield.swf" width="180.00" backgroundalpha="0.50" align="down"  x="0" y="100" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="New Building" parent="hotspot[hsp_1_8]"/>
+
+	</scene>
+
+	<scene name="scene_Entrance_View" title="Entrance View"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/Entrance_View.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Entrance_View.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Entrance_View.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+<hotspot name="spot5" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="-178.2424" atv="19.5447" rotate="2.75" onclick="skin_loadscene(scene_Main_Gate);" scale="0.40" zoom="false" />
+<layer name="text13" url="textfield.swf" width="150.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Main Gate" parent="hotspot[spot5]"/>
+
+<hotspot name="spot6" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="-60.8379" atv="8.7873" rotate="8.25" onclick="skin_loadscene(scene_Campus_View);" scale="0.40" zoom="false" />
+<layer name="text14" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Campus View" parent="hotspot[spot6]"/>
+
+<hotspot name="spot7" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="32.3517" atv="8.1101" rotate="2.75" onclick="skin_loadscene(scene_Auditorium_Outside);" scale="0.40" zoom="false" />
+<layer name="text15" url="textfield.swf" width="150.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Auditorium" parent="hotspot[spot7]"/>
+
+<hotspot name="spot8" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="78.1586" atv="10.1382" onclick="skin_loadscene(scene_Basketball_Court);" scale="0.40" zoom="false" />
+<layer name="text16" url="textfield.swf" width="250.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="BasketBall Court" parent="hotspot[spot8]"/>
+<hotspot name="hsp_30_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.686" ath="-7.6251" atv="88.3587" distorted="true" install_onclick="5" />
+	</scene>
+
+	<scene name="scene_FC_Classroom" title="FC Classroom" onstart="showloading();" onloaded="hideloading();" thumburl="panos/FC_Classroom.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/FC_Classroom.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/FC_Classroom.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+<hotspot name="spot38" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="-137.6537" atv="4.4173" onclick="skin_loadscene(scene_Ground_Floor);" scale="0.40" zoom="false" />
+<layer name="text46" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot38]"/>
+
+<hotspot name="hsp_31_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="-122.9287" atv="87.9786" distorted="true" install_onclick="5" />
+	</scene>
+
+	<scene name="scene_FD_Classroom" title="FD Classroom"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/FD_Classroom.tiles/thumb.jpg" lat="12.90000000" lng="77.65000000" alt="-0.00" heading="0.0">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/FD_Classroom.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/FD_Classroom.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048" />
+		</image>
+
+		<hotspot name="spot116" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="-36.9608" atv="3.0581" onclick="skin_loadscene(scene_2nd_Floor_Main_Building);" scale="0.40" zoom="false" />
+		<layer name="text127" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot116]"/>
+		<hotspot name="hsp_32_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="-10.8911" atv="89.2466" distorted="true" install_onclick="5" />
+
+	</scene>
+
+	<scene name="scene_GC_Lab_1" title="GC Lab 1"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/GC_Lab_1.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/GC_Lab_1.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/GC_Lab_1.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+		
+		<hotspot name="spot113" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="129.1814" atv="-1.4795"  onclick="skin_loadscene(scene_2nd_Floor_Main_Building);" scale="0.40" zoom="false" />
+		<layer name="text124" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot113]"/>
+		<hotspot name="hsp_33_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="2.1980" atv="88.8372" distorted="true" install_onclick="5" />
+	</scene>
+
+
+	<scene name="scene_GC_Lab_2" title="GC Lab 2"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/GC_Lab_2.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/GC_Lab_2.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/GC_Lab_2.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+		<hotspot name="spot114" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="-29.8064" atv="-1.7779"  onclick="skin_loadscene(scene_2nd_Floor_Main_Building);" scale="0.40" zoom="false" />
+		<layer name="text125" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot114]"/>
+		<hotspot name="hsp_34_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="-172.7493" atv="88.3063" distorted="true" install_onclick="5" />
+
+	</scene>
+
+	<scene name="scene_GC_Lab_New_Building" title="GC Lab New Building"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/GC_Lab_New_Building.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/GC_Lab_New_Building.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/GC_Lab_New_Building.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+<hotspot name="spot58" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="11.0026" atv="-0.3204" onclick="skin_loadscene(scene_New_Building_Outside_View);" scale="0.40" zoom="false" />
+<layer name="text66" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot58]"/>
+
+<hotspot name="spot59" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="97.6119" atv="3.6802" onclick="skin_loadscene(scene_N8);" scale="0.40" zoom="false" />
+<layer name="text67" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="DFT Classroom" parent="hotspot[spot59]"/>
+
+<hotspot name="spot60" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="-97.3268" atv="0.1586" onclick="skin_loadscene(scene_Pattern_Making_Lab_New_Building);" scale="0.40" zoom="false" />
+<layer name="text68" url="textfield.swf" width="150.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="PM Lab" parent="hotspot[spot60]"/>
+<hotspot name="hsp_35_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="2.1980" atv="88.8372" distorted="true" install_onclick="5" />
+	</scene>
+
+	<scene name="scene_Ground_Floor" title="Ground Floor"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/Ground_Floor.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Ground_Floor.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Ground_Floor.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+<hotspot name="spot29" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"   ath="62.3946" atv="13.1800" onclick="skin_loadscene(scene_Campus_View);" scale="0.40" zoom="false" />
+<layer name="text37" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Main View" parent="hotspot[spot29]"/>
+
+<hotspot name="spot30" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="78.4174" atv="21.5277" onclick="skin_loadscene(scene_Campus_Entrance);" scale="0.40" zoom="false" />
+<layer name="text38" url="textfield.swf" width="300.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Campus Entrance" parent="hotspot[spot30]"/>
+
+<hotspot name="spot31" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="14.7119" atv="-3.3545" onclick="skin_loadscene(scene_Director_s_Cabin_and_Conferrence_Room);" scale="0.40" zoom="false" />
+<layer name="text39" url="textfield.swf" width="300.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="70" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Director's Office And Conference Room" parent="hotspot[spot31]"/>
+
+<hotspot name="spot32" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="-106.5324" atv="18.3819" onclick="skin_loadscene(scene_To_main_building_and_amphitheatre);" scale="0.40" zoom="false" />
+<layer name="text40" url="textfield.swf" width="450.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Main Building And Ampthitheater" parent="hotspot[spot32]"/>
+
+<hotspot name="spot33" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="-173.9430" atv="9.5061" onclick="skin_loadscene(scene_FC_Classroom);" scale="0.40" zoom="false" />
+<layer name="text41" url="textfield.swf" width="450.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Foundation Program Classroom 1" parent="hotspot[spot33]"/>
+
+<hotspot name="spot34" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="-173.6968" atv="20.0706" onclick="skin_loadscene(scene_C32);" scale="0.40" zoom="false" />
+<layer name="text42" url="textfield.swf" width="450.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Foundation Program Classroom 2" parent="hotspot[spot34]"/>
+
+<hotspot name="spot35" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="-171.7718" atv="31.1065" onclick="skin_loadscene(scene_B9_Material_Lab);" scale="0.40" zoom="false" />
+<layer name="text43" url="textfield.swf" width="350.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Foundation Program Lab" parent="hotspot[spot35]"/>
+<hotspot name="hsp_36_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="2.743" ath="-101.4209" atv="88.1464" distorted="true" install_onclick="5" />
+
+	</scene>
+
+	<scene name="scene_Hand_Flat_Bed_Knitting_Lab" title="Hand Flat Bed Knitting Lab"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/Hand_Flat_Bed_Knitting_Lab.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Hand_Flat_Bed_Knitting_Lab.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Hand_Flat_Bed_Knitting_Lab.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+<hotspot name="spot24" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="-130.6376" atv="28.5259"	 onclick="skin_loadscene(scene_Knitting_Labs);" scale="0.40" zoom="false" />
+<layer name="text32" url="textfield.swf" width="150.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Knitting Lab" parent="hotspot[spot24]"/>
+<hotspot name="hsp_37_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.686" ath="65.0798" atv="88.1917" distorted="true" install_onclick="5" />
+	</scene>
+
+	<scene name="scene_Hostel_Room" title="Hostel Room"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/Hostel_Room.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Hostel_Room.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Hostel_Room.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+<hotspot name="spot79" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="-102.7597" atv="5.2056" onclick="skin_loadscene(scene_Main_Building_Ground_Floor_2);" scale="0.40" zoom="false" />
+<layer name="text88" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot79]"/>
+	
+<hotspot name="hsp_New" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="-158.3882" atv="89.7290" distorted="true" install_onclick="5" />
+</scene>
+
+
+
+	<scene name="scene_IT_Lab_D11" title="IT Lab D11"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/IT_Lab_D11.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/IT_Lab_D11.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/IT_Lab_D11.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+		<hotspot name="spot84" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="-7.5245" atv="13.0174"  onclick="skin_loadscene(scene_Design_Labs);" scale="0.40" zoom="false" />
+		<layer name="text93" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot84]"/>
+		<hotspot name="hsp_40_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="2.1980" atv="88.8372" distorted="true" install_onclick="5" />
+	</scene>
+
+	<scene name="scene_IT_Lab_D12" title="IT Lab D12"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/IT_Lab_D12.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/IT_Lab_D12.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/IT_Lab_D12.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+<hotspot name="spot85" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="-16.5749" atv="3.2035" onclick="skin_loadscene(scene_Design_Labs);" scale="0.40" zoom="false" />
+<layer name="text94" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot85]"/>
+<hotspot name="hsp_41_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="2.1980" atv="88.8372" distorted="true" install_onclick="5" />
+	</scene>
+
+	<scene name="scene_J2_Garment_Construction_Lab" title="J2 Garment Construction Lab"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/J2_Garment_Construction_Lab.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/J2_Garment_Construction_Lab.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/J2_Garment_Construction_Lab.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+<hotspot name="spot78" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="-37.6966" atv="-1.6936" onclick="skin_loadscene(scene_Main_Building_Ground_Floor_2);" scale="0.40" zoom="false" />
+<layer name="text87" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot78]"/>
+<hotspot name="hsp_42_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="2.1980" atv="88.8372" distorted="true" install_onclick="5" />
+	</scene>
+
+	<scene name="scene_J3_Classroom" title="J3 Classroom"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/J3_Classroom.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/J3_Classroom.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/J3_Classroom.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+		<hotspot name="spot93" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"   ath="68.1069" atv="12.6654"  onclick="skin_loadscene(scene_1st_Floor_Main_Building);" scale="0.40" zoom="false" />
+		<layer name="text104" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot93]"/>
+		<hotspot name="hsp_43_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="-149.9429" atv="89.5494" distorted="true" install_onclick="5" />
+	</scene>
+
+	<scene name="scene_Knitting_Labs" title="Knitting Labs"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/Knitting_Labs.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Knitting_Labs.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Knitting_Labs.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+<hotspot name="spot19" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="-55.3782" atv="29.2677" onclick="skin_loadscene(scene_Circular_Knitting_Lab);" scale="0.40" zoom="false" />
+<layer name="text27" url="textfield.swf" width="250.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Circular Knitting" parent="hotspot[spot19]"/>
+
+<hotspot name="spot20" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="-5.8656" atv="35.8374" onclick="skin_loadscene(scene_Computorised_Knitting_Lab);" scale="0.40" zoom="false" />
+<layer name="text28" url="textfield.swf" width="300.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Computerised Knitting" parent="hotspot[spot20]"/>
+
+<hotspot name="spot21" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="58.1522" atv="24.2348" onclick="skin_loadscene(scene_Hand_Flat_Bed_Knitting_Lab);" scale="0.40" zoom="false" />
+<layer name="text29" url="textfield.swf" width="300.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Hand Flat Bed Knitting" parent="hotspot[spot21]"/>
+
+<hotspot name="spot22" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="-145.1177" atv="8.5963" onclick="skin_loadscene(scene_Campus_View);" scale="0.40" zoom="false" />
+<layer name="text30" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot22]"/>
+<hotspot name="hsp_44_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.686" ath="-17.5326" atv="87.3096" distorted="true" install_onclick="5" />
+	</scene>
+
+	<scene name="scene_Library" title="Library"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/Library.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Library.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Library.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+		<hotspot name="spot86" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="-65.2827" atv="11.4270" onclick="skin_loadscene(scene_Main_Building_Ground_Floor_2);" scale="0.40" zoom="false" />
+		<layer name="text95" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot86]"/>
+		<hotspot name="hsp_45_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="2.1980" atv="88.8372" distorted="true" install_onclick="5" />
+	</scene>
+
+	<scene name="scene_Main_Building_Ground_Floor_2" title="Main Building Ground Floor 2" onstart="showloading();" onloaded="hideloading();" thumburl="panos/Main_Building_Ground_Floor_2.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Main_Building_Ground_Floor_2.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Main_Building_Ground_Floor_2.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+<hotspot name="spot72" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="-0.3991" atv="5.4313" onclick="skin_loadscene(scene_Canteen);" scale="0.40" zoom="false" />
+<layer name="text81" url="textfield.swf" width="120.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Canteen" parent="hotspot[spot72]"/>
+
+<hotspot name="spot73" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="9.4062" atv="5.3287" onclick="skin_loadscene(scene_Hostel_Room);" scale="0.40" zoom="false" />
+<layer name="text82" url="textfield.swf" width="120.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Hostel" parent="hotspot[spot73]"/>
+
+<hotspot name="spot74" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="76.4652" atv="10.3870" onclick="skin_loadscene(scene_J2_Garment_Construction_Lab);" scale="0.40" zoom="false" />
+<layer name="text83" url="textfield.swf" width="400.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Garment Construction Lab" parent="hotspot[spot74]"/>
+
+<hotspot name="spot75" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="173.3711" atv="13.7275" rotate="-16.5" onclick="skin_loadscene(scene_Main_Building_Ground_Floor);" scale="0.40" zoom="false" />
+<layer name="text84" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Ground Floor And Reception" parent="hotspot[spot75]"/>
+
+<hotspot name="spot76" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="-103.4911" atv="6.1501" onclick="skin_loadscene(scene_Library);" scale="0.40" zoom="false" />
+<layer name="text85" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Resource Center" parent="hotspot[spot76]"/>
+
+<hotspot name="spot77" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="-74.8796" atv="17.8753" onclick="skin_loadscene(scene_Design_Labs);" scale="0.40" zoom="false" />
+<layer name="text86" url="textfield.swf" width="150.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="IT Department" parent="hotspot[spot77]"/>
+<hotspot name="hsp_46_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="2.1980" atv="88.8372" distorted="true" install_onclick="5" />
+
+	</scene>
+
+	<scene name="scene_Main_Building_Ground_Floor" title="Main Building Ground Floor"  onstart="showloading();" onloaded="hideloading();"  thumburl="panos/Main_Building_Ground_Floor.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Main_Building_Ground_Floor.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Main_Building_Ground_Floor.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+<hotspot name="text_Building3" url="textfield.swf" width="100.00" backgroundalpha="0.50" ath="83.7676" atv="8.3871" align="down"  x="0" y="80" height="30" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0xFF0000" bg="true" textwidth="120" textheight="38" textalign="center" text="Block C"/>
+
+<hotspot name="spot64" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="177.1251" atv="20.5297" onclick="skin_loadscene(scene_Main_Building_Ground_Floor_2);" scale="0.40" zoom="false" />
+<layer name="text73" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Canteen And Hostal" parent="hotspot[spot64]"/>
+
+<hotspot name="spot65" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="134.9237" atv="18.5571" onclick="skin_loadscene(scene_1st_Floor_Main_Building);" scale="0.40" zoom="false" />
+<layer name="text74" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="1st Floor" parent="hotspot[spot65]"/>
+
+<hotspot name="spot66" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="111.3939" atv="14.2794" onclick="skin_loadscene(scene_Accessory_Design_Classroom);" scale="0.40" zoom="false" />
+<layer name="text75" url="textfield.swf" width="350.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Accessory Design Classroom" parent="hotspot[spot66]"/>
+
+<hotspot name="spot67" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="55.0657" atv="13.0877" onclick="skin_loadscene(scene_Accessory_Design_Workshop);" scale="0.40" zoom="false" />
+<layer name="text76" url="textfield.swf" width="350.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Accessory Design Workshop" parent="hotspot[spot67]"/>
+
+<hotspot name="spot68" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="51.4914" atv="24.8535" onclick="skin_loadscene(scene_Accessory_Machine_Workshop);" scale="0.40" zoom="false" />
+<layer name="text77" url="textfield.swf" width="300.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Accessory Machine Workshop" parent="hotspot[spot68]"/>
+
+<hotspot name="spot69" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="-11.8825" atv="15.2560" onclick="skin_loadscene(scene_Ground_Floor);" scale="0.40" zoom="false" />
+<layer name="text78" url="textfield.swf" width="300.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Ground Floor And Reception" parent="hotspot[spot69]"/>
+<hotspot name="hsp_47_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="19.1142" atv="89.4956" distorted="true" install_onclick="5" />
+</scene>
+
+	<scene name="scene_Main_Gate" title="Main Gate"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/Main_Gate.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Main_Gate.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Main_Gate.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+		<hotspot name="hsp_48_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.686" ath="-3.9746" atv="85.8568" distorted="true" install_onclick="5" />
+<hotspot name="spot4" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="-6.0710" atv="9.5270" rotate="2.75" onclick="skin_loadscene(scene_Entrance_View);" scale="0.40" zoom="false" />
+<layer name="text12" url="textfield.swf" width="150.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Entrance" parent="hotspot[spot4]"/>
+
+	</scene>
+
+	<scene name="scene_N8" title="N8"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/N8.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/N8.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/N8.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+		<hotspot name="hsp_49_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.251" ath="-119.7362" atv="89.1058" distorted="true" install_onclick="5" />
+<hotspot name="spot61" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"   ath="124.5284" atv="3.0654" onclick="skin_loadscene(scene_New_Building_Outside_View);" scale="0.40" zoom="false" />
+<layer name="text70" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot61]"/>
+
+	</scene>
+
+	<scene name="scene_N12" title="N12" onstart="showloading();" onloaded="hideloading();" thumburl="panos/N12.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/N12.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/N12.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+		<hotspot name="hsp_50_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="0" depth="0" install_onclick="5" />
+		<hotspot name="hsp_50_3" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.415" ath="-129.6536" atv="89.3745" distorted="true" install_onclick="5" />
+<hotspot name="spot63" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"   ath="118.6518" atv="2.3310" onclick="skin_loadscene(scene_New_Building_Outside_View);" scale="0.40" zoom="false" />
+<layer name="text72" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot63]"/>
+
+
+	</scene>
+
+	<scene name="scene_New_Building_Outside_View" title="New Building Outside View"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/New_Building_Outside_View.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/New_Building_Outside_View.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/New_Building_Outside_View.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+
+<hotspot name="spot52" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="-175.0729" atv="13.4580" onclick="skin_loadscene(scene_Amphitheatre);" scale="0.40" zoom="false" />
+<layer name="text60" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Amphitheatre" parent="hotspot[spot52]"/>
+
+<hotspot name="spot53" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="156.3114" atv="15.6940" onclick="skin_loadscene(scene_Auditorium_Outside);" scale="0.40" zoom="false" />
+<layer name="text61" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Auditorium" parent="hotspot[spot53]"/>
+
+<hotspot name="spot54" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="60.0816" atv="6.0316" onclick="skin_loadscene(scene_N8);" scale="0.40" zoom="false" />
+<layer name="text62" url="textfield.swf" width="450.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Fashion Technology Classroom" parent="hotspot[spot54]"/>
+
+<hotspot name="spot55" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="58.9587" atv="12.3779" onclick="skin_loadscene(scene_Pattern_Making_Lab_New_Building);" scale="0.40" zoom="false" />
+<layer name="text63" url="textfield.swf" width="280.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Pattern Making Lab" parent="hotspot[spot55]"/>
+
+<hotspot name="spot56" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="74.6547" atv="7.9486" onclick="skin_loadscene(scene_N12);" scale="0.40" zoom="false" />
+<layer name="text64" url="textfield.swf" width="400.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Master of Design Department" parent="hotspot[spot56]"/>
+
+<hotspot name="spot57" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"   ath="57.3504" atv="18.8722" onclick="skin_loadscene(scene_GC_Lab_New_Building);" scale="0.40" zoom="false" />
+<layer name="text65" url="textfield.swf" width="350.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Garment Construction Lab" parent="hotspot[spot57]"/>
+
+<hotspot name="hsp_51_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="2.846" ath="58.6498" atv="89.4080" distorted="true" install_onclick="5" />
+	</scene>
+
+
+
+	<scene name="scene_Pattern_Making_Lab_New_Building" title="Pattern Making Lab New Building" onstart="showloading();" onloaded="hideloading();" thumburl="panos/Pattern_Making_Lab_New_Building.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Pattern_Making_Lab_New_Building.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Pattern_Making_Lab_New_Building.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+<hotspot name="spot62" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"   ath="-86.6479" atv="1.1783" onclick="skin_loadscene(scene_New_Building_Outside_View);" scale="0.40" zoom="false" />
+<layer name="text71" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot62]"/>
+<hotspot name="hsp_New4" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="-158.3882" atv="89.7290" distorted="true" install_onclick="5" />
+	</scene>
+
+	<scene name="scene_Pattern_Making_Lab" title="Pattern Making Lab"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/Pattern_Making_Lab.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Pattern_Making_Lab.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Pattern_Making_Lab.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+		<hotspot name="spot95" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"   ath="178.5558" atv="0.4274"  onclick="skin_loadscene(scene_1st_Floor_Main_Building);" scale="0.40" zoom="false" />
+		<layer name="text106" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot95]"/>
+
+		<hotspot name="hsp_54_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="2.1980" atv="88.8372" distorted="true" install_onclick="5" />
+	</scene>
+
+	<scene name="scene_Quality_Assurance_Lab" title="Quality Assurance Lab"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/Quality_Assurance_Lab.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Quality_Assurance_Lab.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Quality_Assurance_Lab.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+		<hotspot name="spot101" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="163.1397" atv="11.0785"  onclick="skin_loadscene(scene_TD_Department);" scale="0.40" zoom="false" />
+		<layer name="text112" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot101]"/>
+
+		<hotspot name="hsp_55_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="2.1980" atv="88.8372" distorted="true" install_onclick="5" />
+	</scene>
+
+	<scene name="scene_Surface_Design_Lab" title="Surface Design Lab"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/Surface_Design_Lab.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Surface_Design_Lab.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Surface_Design_Lab.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+		<hotspot name="spot100" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="114.8733" atv="14.8862"  onclick="skin_loadscene(scene_TD_Department);" scale="0.40" zoom="false" />
+		<layer name="text111" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot100]"/>
+
+		<hotspot name="hsp_56_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="2.1980" atv="88.8372" distorted="true" install_onclick="5" />
+	</scene>
+
+	<scene name="scene_TD_Department" title="TD Department"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/TD_Department.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/TD_Department.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/TD_Department.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+		
+		<hotspot name="spot96" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="174.7678" atv="1.9776"  onclick="skin_loadscene(scene_1st_Floor_Main_Building);" scale="0.40" zoom="false" />
+		<layer name="text107" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot96]"/>
+		
+		<hotspot name="spot97" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="92.5656" atv="10.5362"  onclick="skin_loadscene(scene_Surface_Design_Lab);" scale="0.40" zoom="false" />
+		<layer name="text108" url="textfield.swf" width="250.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Surface Design Lab" parent="hotspot[spot97]"/>
+		
+		<hotspot name="spot98" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="-175.4395" atv="11.4289" onclick="skin_loadscene(scene_TD2_Design_Studio);" scale="0.40" zoom="false" />
+		<layer name="text109" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="TD Classroom" parent="hotspot[spot98]"/>
+		
+		<hotspot name="spot99" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="-163.0777" atv="21.9791" onclick="skin_loadscene(scene_Quality_Assurance_Lab);" scale="0.40" zoom="false" />
+		<layer name="text110" url="textfield.swf" width="300.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Quality Assurance Lab" parent="hotspot[spot99]"/>
+		<hotspot name="hsp_57_2" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="99.261" atv="88.882" distorted="true" install_onclick="5" />
+
+	</scene>
+
+	<scene name="scene_TD2_Design_Studio" title="TD2 Design Studio"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/TD2_Design_Studio.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/TD2_Design_Studio.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/TD2_Design_Studio.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+		<hotspot name="spot102" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="-50.9988" atv="2.1141"  onclick="skin_loadscene(scene_TD_Department);" scale="0.40" zoom="false" />
+		<layer name="text113" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot102]"/>
+		<hotspot name="hsp_58_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="167.2141" atv="87.7552" distorted="true" install_onclick="5" />
+
+	</scene>
+
+	<scene name="scene_To_main_building_and_amphitheatre" title="To main building and amphitheatre"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/To_main_building_and_amphitheatre.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/To_main_building_and_amphitheatre.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/To_main_building_and_amphitheatre.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+<hotspot name="spot39" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="96.7097" atv="16.8889" onclick="skin_loadscene(scene_Campus_Entrance);" scale="0.40" zoom="false" />
+<layer name="text47" url="textfield.swf" width="150.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Reception" parent="hotspot[spot39]"/>
+
+<hotspot name="spot_NEW_1" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="13.4793" atv="21.3584"  onclick="skin_loadscene(scene_Ground_Floor);" scale="0.40" zoom="false" />
+<layer name="text_NEW_1" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Ground Floor" parent="hotspot[spot_NEW_1]"/>
+
+<hotspot name="spot40" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="154.8568" atv="16.9869" onclick="skin_loadscene(scene_Main_Building_Ground_Floor);" scale="0.40" zoom="false" />
+<layer name="text48" url="textfield.swf" width="400.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="60" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Main Building, Classroom And Labs" parent="hotspot[spot40]"/>
+
+<hotspot name="spot41" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="-120.5010" atv="22.5748" onclick="skin_loadscene(scene_Amphitheatre);" scale="0.40" zoom="false" />
+<layer name="text49" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Amphitheatre" parent="hotspot[spot41]"/>
+
+<hotspot name="spot42" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="-104.5895" atv="13.6533" rotate="22" onclick="skin_loadscene(scene_New_Building_Outside_View);" scale="0.40" zoom="false" />
+<layer name="text50" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="New Building" parent="hotspot[spot42]"/>
+	
+<hotspot name="hsp_59_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.686" ath="-7.6251" atv="88.3587" distorted="true" install_onclick="5" />
+	</scene>
+
+	<scene name="scene_VC_Room" title="VC Room"  onstart="showloading();" onloaded="hideloading();" thumburl="panos/VC_Room.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/VC_Room.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/VC_Room.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+<hotspot name="spot48" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="119.3757" atv="-4.4149" onclick="skin_loadscene(scene_Director_s_Cabin_and_Conferrence_Room);" scale="0.40" zoom="false" />
+<layer name="text56" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot48]"/>
+<hotspot name="hsp_60_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="-158.3882" atv="89.7290" distorted="true" install_onclick="5" />
+	</scene>
+
+	<scene name="scene_Weaving_Studio" title="Weaving Studio" onstart="" thumburl="panos/Weaving_Studio.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Weaving_Studio.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Weaving_Studio.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+		<hotspot name="spot_Weaving_Studio" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="176.1684" atv="-0.2463" onclick="skin_loadscene(scene_2nd_Floor_Main_Building);" scale="0.40" zoom="false" />
+		<layer name="text_Weaving_Studio" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot_Weaving_Studio]"/>
+	</scene>
+
+	<scene name="scene_Pattern_Making_Lab_2" title="Pattern Making Lab 2" onstart="" thumburl="panos/Pattern_Making_Lab_2.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Pattern_Making_Lab_2.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Pattern_Making_Lab_2.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+		<hotspot name="spot_patern_Making" url="arrow.png" onloaded="do_crop_animation(128,128, 60);"  ath="106.8986" atv="-2.6286" onclick="skin_loadscene(scene_2nd_Floor_Main_Building);" scale="0.40" zoom="false" />
+		<layer name="spot_patern_Making_text" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot_patern_Making]"/>
+	</scene>
+	<events name="globalEvents" onnewscene="playsound(test, audio/Music.mp3, 0);" />
+
+	<scene name="video_short" title="videocorto"  thumburl="menu\image\DirectorOffice.png" onstart="showloading();" onloaded="hideloading();"   lat="" lng="" alt="" heading="" isvideopano="true">
+    <plugin name="vidMon"  preload="false" url="%VIEWER%/plugins/videoplayer.js" panovideo="true" 
+    videourl="MeetDirectoer.mp4" posterurl="panos/VC_Room.tiles/preview.jpg"
+    pausedonstart="false" loop="false" volume="1.0" onleave="playsound(test, audio/Music.mp3, 0);" />
+	<image >
+        <preview url="panos/VC_Room.tiles/preview.jpg" />    
+        <sphere url="plugin:vidMon" />
+    </image>
+
+<hotspot name="spot__1" url="arrow.png" onloaded="do_crop_animation(128,128, 60);" ath="109.5941" atv="3.4660" onclick="playsound(test, audio/Music.mp3, 0); skin_loadscene(scene_Director_s_Cabin_and_Conferrence_Room);" scale="0.40" zoom="false" />
+<layer name="text__1" url="textfield.swf" width="100.00" backgroundalpha="0.50" align="down"  x="0" y="80" height="38" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5"  bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Exit" parent="hotspot[spot__1]"/>
+
+<hotspot name="hsp_61_1" style="link_hs_sm" url="%FIRSTXML%/add_hotspot/picture/nift-circular.png" scale="3.299" ath="1.4872" atv="89.3697" distorted="true" install_onclick="5" />
+</scene>
+
+</krpano>

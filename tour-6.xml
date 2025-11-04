@@ -1,0 +1,960 @@
+<krpano version="1.21" title="Virtual Tour">
+
+	<include url="skin/vtourskin.xml" />
+       <include url="menu/plugins/menu_sm.xml" />
+       <include url="menu/plugins/edit_menu_sm.xml" />
+       <include url="menu/plugins/photo_sm.xml" />
+       <include url="%SWFPATH%/add_hotspot/plugins_l/add_hotspot.xml" /> 
+       <include url="%SWFPATH%/add_hotspot/plugins_l/editor/add_hotspot_2.xml" /> 
+    
+    
+    
+   
+
+	<!-- customize skin settings: maps, gyro, webvr, thumbnails, tooltips, layout, design, ... -->
+	<skin_settings maps="true"
+	               maps_type="google"
+	               maps_bing_api_key=""
+	               maps_google_api_key=""
+	               maps_zoombuttons="false"
+	               maps_loadonfirstuse="true"
+	               gyro="true"
+	               gyro_keeplookingdirection="false"
+	               webvr="true"
+	               webvr_keeplookingdirection="true"
+	               webvr_prev_next_hotspots="true"
+	               autotour="false"
+	               littleplanetintro="false"
+	               followmousecontrol="false"
+	               title="true"
+	               thumbs="true"
+	               thumbs_width="120" thumbs_height="80" thumbs_padding="10" thumbs_crop="0|40|240|160"
+	               thumbs_opened="false"
+	               thumbs_text="false"
+	               thumbs_dragging="true"
+	               thumbs_onhoverscrolling="false"
+	               thumbs_scrollbuttons="false"
+	               thumbs_scrollindicator="false"
+	               thumbs_loop="false"
+	               tooltips_buttons="false"
+	               tooltips_thumbs="false"
+	               tooltips_hotspots="false"
+	               tooltips_mapspots="false"
+	               deeplinking="false"
+	               loadscene_flags="MERGE"
+	               loadscene_blend="OPENBLEND(0.5, 0.0, 0.75, 0.05, linear)"
+	               loadscene_blend_prev="SLIDEBLEND(0.5, 180, 0.75, linear)"
+	               loadscene_blend_next="SLIDEBLEND(0.5,   0, 0.75, linear)"
+	               loadingtext=""
+	               layout_width="100%"
+	               layout_maxwidth="814"
+	               controlbar_width="-24"
+	               controlbar_height="40"
+	               controlbar_offset="20"
+	               controlbar_offset_closed="-40"
+	               controlbar_overlap.no-fractionalscaling="10"
+	               controlbar_overlap.fractionalscaling="0"
+	               design_skin_images="vtourskin.png"
+	               design_bgcolor="0x2D3E50"
+	               design_bgalpha="0.8"
+	               design_bgborder="0"
+	               design_bgroundedge="1"
+	               design_bgshadow="0 4 10 0x000000 0.3"
+	               design_thumbborder_bgborder="3 0xFFFFFF 1.0"
+	               design_thumbborder_padding="2"
+	               design_thumbborder_bgroundedge="0"
+	               design_text_css="color:#FFFFFF; font-family:Arial;"
+	               design_text_shadow="1"
+	               />
+
+	<!--
+	    For an alternative skin design either change the <skin_settings> values 
+	    from above or optionally include one of the predefined designs from below.
+	-->
+	<!-- <include url="skin/vtourskin_design_flat_light.xml"  /> -->
+	<!-- <include url="skin/vtourskin_design_glass.xml"       /> -->
+	<!-- <include url="skin/vtourskin_design_ultra_light.xml" /> -->
+	<!-- <include url="skin/vtourskin_design_117.xml"         /> -->
+	<!-- <include url="skin/vtourskin_design_117round.xml"    /> -->
+	<!-- <include url="skin/vtourskin_design_black.xml"       /> -->
+
+  
+        <action name="do_crop_animation" scope="local" args="framewidth, frameheight, framerate">
+		<!-- define local variables -->
+		calc(local.xframes, (caller.imagewidth /framewidth) BOR 0);
+		calc(local.frames, xframes * ((caller.imageheight / frameheight) BOR 0));
+		def(local.frame, integer, 0);
+		
+		<!-- set the first frame -->
+		calc(caller.crop, '0|0|' + framewidth + '|' + frameheight);
+		
+		<!-- do the animation -->
+		setinterval(calc('crop_anim_' + caller.name), calc(1.0 / framerate),
+			if(caller.loaded,
+				inc(frame);
+				if(frame GE frames, if(caller.onlastframe !== null, callwith(caller, onlastframe() ) ); set(frame,0); );
+				mod(xpos, frame, xframes);
+				div(ypos, frame, xframes);
+				Math.floor(ypos);
+				mul(xpos, framewidth);
+				mul(ypos, frameheight);
+				calc(caller.crop, xpos + '|' + ypos + '|' + framewidth + '|' + frameheight);
+			  ,
+				<!-- stop the interval when the hotspot gets removed -->
+				clearinterval(calc('crop_anim_' + caller.name));
+			);
+		);
+	</action>
+
+    
+        	<!-- *** add hotspt *** -->
+
+<scene name="scene_DJI_0088_sky-2" title="Aerial View 1" onstart="" thumburl="panos/DJI_0088_sky-2.tiles/thumb.jpg" lat="12.91264864" lng="77.65209847" alt="927.41" heading="0.0">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/DJI_0088_sky-2.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/DJI_0088_sky-2.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1152,2304,4608" />
+    
+		</image>
+<hotspot name="scene_DJI_0088_sky-2" url="Arrow.png" onloaded="do_crop_animation(128,128, 15);" ath="0" atv="-12" onclick="looktohotspot(get(scene_2nd_Floor_Main_Building),65);" scale="0.25" zoom="true" />
+	
+		<hotspot name="hsp_0_4" style="link_hs_sm" onout='scale="0.25"' onclick="skin_loadscene(scene_1st_Floor_Main_Building);" onhover='scale="0.50"showtit();' url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" scale="0.25" ath="17.8786" atv="-21.9090" title="hello" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+	</scene>
+
+	<scene name="scene_2nd_Floor_Main_Building" title="2nd Floor Main Building" onstart="" thumburl="panos/2nd_Floor_Main_Building.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/2nd_Floor_Main_Building.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/2nd_Floor_Main_Building.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+        	</scene>
+	<scene name="scene_1st_Floor_Main_Building" title="1st Floor Main Building" onstart="" thumburl="panos/1st_Floor_Main_Building.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/1st_Floor_Main_Building.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/1st_Floor_Main_Building.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	
+
+
+	<scene name="scene_3rd_Floor_Main_Building" title="3rd Floor Main Building" onstart="" thumburl="panos/3rd_Floor_Main_Building.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/3rd_Floor_Main_Building.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/3rd_Floor_Main_Building.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Accessory_Design_Classroom" title="Accessory Design Classroom" onstart="" thumburl="panos/Accessory_Design_Classroom.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Accessory_Design_Classroom.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Accessory_Design_Classroom.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Accessory_Design_Workshop" title="Accessory Design Workshop" onstart="" thumburl="panos/Accessory_Design_Workshop.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Accessory_Design_Workshop.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Accessory_Design_Workshop.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Accessory_Machine_Workshop" title="Accessory Machine Workshop" onstart="" thumburl="panos/Accessory_Machine_Workshop.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Accessory_Machine_Workshop.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Accessory_Machine_Workshop.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Accounts_Department" title="Accounts Department" onstart="" thumburl="panos/Accounts_Department.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Accounts_Department.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Accounts_Department.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Amphitheatre" title="Amphitheatre" onstart="" thumburl="panos/Amphitheatre.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Amphitheatre.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Amphitheatre.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Auditorium_Inside" title="Auditorium Inside" onstart="" thumburl="panos/Auditorium_Inside.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Auditorium_Inside.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Auditorium_Inside.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Auditorium_Outside" title="Auditorium Outside" onstart="" thumburl="panos/Auditorium_Outside.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Auditorium_Outside.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Auditorium_Outside.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_B31" title="B31" onstart="" thumburl="panos/B31.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/B31.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/B31.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_B9_Material_Lab" title="B9 Material Lab" onstart="" thumburl="panos/B9_Material_Lab.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/B9_Material_Lab.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/B9_Material_Lab.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Basketball_Court" title="Basketball Court" onstart="" thumburl="panos/Basketball_Court.tiles/thumb.jpg" lat="12.91230556" lng="77.65211111" alt="812.50" heading="0.0">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Basketball_Court.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Basketball_Court.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_C13_Art_Room" title="C13 Art Room" onstart="" thumburl="panos/C13_Art_Room.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/C13_Art_Room.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/C13_Art_Room.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_C32" title="C32" onstart="" thumburl="panos/C32.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/C32.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/C32.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_C34_Photography_Lab" title="C34 Photography Lab" onstart="" thumburl="panos/C34_Photography_Lab.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/C34_Photography_Lab.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/C34_Photography_Lab.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Campus_Entrance" title="Campus Entrance" onstart="" thumburl="panos/Campus_Entrance.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Campus_Entrance.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Campus_Entrance.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Campus_View" title="Campus View" onstart="" thumburl="panos/Campus_View.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Campus_View.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Campus_View.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Canteen" title="Canteen" onstart="" thumburl="panos/Canteen.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Canteen.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Canteen.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Circular_Knitting_Lab" title="Circular Knitting Lab" onstart="" thumburl="panos/Circular_Knitting_Lab.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Circular_Knitting_Lab.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Circular_Knitting_Lab.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Computorised_Knitting_Lab" title="Computorised Knitting Lab" onstart="" thumburl="panos/Computorised_Knitting_Lab.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Computorised_Knitting_Lab.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Computorised_Knitting_Lab.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Conference_Room" title="Conference Room" onstart="" thumburl="panos/Conference_Room.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Conference_Room.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Conference_Room.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Design_Labs" title="Design Labs" onstart="" thumburl="panos/Design_Labs.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Design_Labs.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Design_Labs.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Director_s_Cabin_and_Conferrence_Room" title="Director_s Cabin and Conferrence Room" onstart="" thumburl="panos/Director_s_Cabin_and_Conferrence_Room.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Director_s_Cabin_and_Conferrence_Room.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Director_s_Cabin_and_Conferrence_Room.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	
+
+	<scene name="scene_DJI_0094-1" title="DJI_0094-1" onstart="" thumburl="panos/DJI_0094-1.tiles/thumb.jpg" lat="12.91238067" lng="77.65229267" alt="904.69" heading="0.0">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/DJI_0094-1.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/DJI_0094-1.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1152,2304,4608" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Draping_Lab" title="Draping Lab" onstart="" thumburl="panos/Draping_Lab.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Draping_Lab.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Draping_Lab.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Drone_view_2_final" title="Drone view 2 final" onstart="" thumburl="panos/Drone_view_2_final.tiles/thumb.jpg" lat="12.91190200" lng="77.65268628" alt="919.47" heading="0.0">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Drone_view_2_final.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Drone_view_2_final.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1152,2304,4608" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Entrance_View" title="Entrance View" onstart="" thumburl="panos/Entrance_View.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Entrance_View.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Entrance_View.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_FC_Classroom" title="FC Classroom" onstart="" thumburl="panos/FC_Classroom.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/FC_Classroom.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/FC_Classroom.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_FD_Classroom" title="FD Classroom" onstart="" thumburl="panos/FD_Classroom.tiles/thumb.jpg" lat="12.90000000" lng="77.65000000" alt="-0.00" heading="0.0">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/FD_Classroom.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/FD_Classroom.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_GC_Lab_1" title="GC Lab 1" onstart="" thumburl="panos/GC_Lab_1.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/GC_Lab_1.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/GC_Lab_1.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_GC_Lab_2" title="GC Lab 2" onstart="" thumburl="panos/GC_Lab_2.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/GC_Lab_2.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/GC_Lab_2.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_GC_Lab_New_Building" title="GC Lab New Building" onstart="" thumburl="panos/GC_Lab_New_Building.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/GC_Lab_New_Building.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/GC_Lab_New_Building.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Ground_Floor" title="Ground Floor" onstart="" thumburl="panos/Ground_Floor.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Ground_Floor.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Ground_Floor.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Hand_Flat_Bed_Knitting_Lab" title="Hand Flat Bed Knitting Lab" onstart="" thumburl="panos/Hand_Flat_Bed_Knitting_Lab.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Hand_Flat_Bed_Knitting_Lab.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Hand_Flat_Bed_Knitting_Lab.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Hostel_Room" title="Hostel Room" onstart="" thumburl="panos/Hostel_Room.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Hostel_Room.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Hostel_Room.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_IMG_20240618_122906_00_019_PureShot_copy" title="IMG_20240618_122906_00_019_PureShot copy" onstart="" thumburl="panos/IMG_20240618_122906_00_019_PureShot_copy.tiles/thumb.jpg" lat="12.90000000" lng="77.65000000" alt="-0.00" heading="0.0">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/IMG_20240618_122906_00_019_PureShot_copy.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/IMG_20240618_122906_00_019_PureShot_copy.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_IT_Lab_D11" title="IT Lab D11" onstart="" thumburl="panos/IT_Lab_D11.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/IT_Lab_D11.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/IT_Lab_D11.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_IT_Lab_D12" title="IT Lab D12" onstart="" thumburl="panos/IT_Lab_D12.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/IT_Lab_D12.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/IT_Lab_D12.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_J2_Garment_Construction_Lab" title="J2 Garment Construction Lab" onstart="" thumburl="panos/J2_Garment_Construction_Lab.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/J2_Garment_Construction_Lab.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/J2_Garment_Construction_Lab.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_J3_Classroom" title="J3 Classroom" onstart="" thumburl="panos/J3_Classroom.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/J3_Classroom.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/J3_Classroom.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Knitting_Labs" title="Knitting Labs" onstart="" thumburl="panos/Knitting_Labs.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Knitting_Labs.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Knitting_Labs.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Library" title="Library" onstart="" thumburl="panos/Library.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Library.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Library.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Main_Building_Ground_Floor_2" title="Main Building Ground Floor 2" onstart="" thumburl="panos/Main_Building_Ground_Floor_2.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Main_Building_Ground_Floor_2.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Main_Building_Ground_Floor_2.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Main_Building_Ground_Floor" title="Main Building Ground Floor" onstart="" thumburl="panos/Main_Building_Ground_Floor.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Main_Building_Ground_Floor.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Main_Building_Ground_Floor.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Main_Gate" title="Main Gate" onstart="" thumburl="panos/Main_Gate.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Main_Gate.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Main_Gate.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_N8" title="N8" onstart="" thumburl="panos/N8.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/N8.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/N8.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_N12" title="N12" onstart="" thumburl="panos/N12.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/N12.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/N12.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_New_Building_Outside_View" title="New Building Outside View" onstart="" thumburl="panos/New_Building_Outside_View.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/New_Building_Outside_View.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/New_Building_Outside_View.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Pattern_Making_Lab_2" title="Pattern Making Lab 2" onstart="" thumburl="panos/Pattern_Making_Lab_2.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Pattern_Making_Lab_2.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Pattern_Making_Lab_2.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Pattern_Making_Lab_New_Building" title="Pattern Making Lab New Building" onstart="" thumburl="panos/Pattern_Making_Lab_New_Building.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Pattern_Making_Lab_New_Building.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Pattern_Making_Lab_New_Building.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Pattern_Making_Lab" title="Pattern Making Lab" onstart="" thumburl="panos/Pattern_Making_Lab.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Pattern_Making_Lab.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Pattern_Making_Lab.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Quality_Assurance_Lab" title="Quality Assurance Lab" onstart="" thumburl="panos/Quality_Assurance_Lab.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Quality_Assurance_Lab.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Quality_Assurance_Lab.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Surface_Design_Lab" title="Surface Design Lab" onstart="" thumburl="panos/Surface_Design_Lab.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Surface_Design_Lab.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Surface_Design_Lab.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_TD_Department" title="TD Department" onstart="" thumburl="panos/TD_Department.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/TD_Department.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/TD_Department.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_TD2_Design_Studio" title="TD2 Design Studio" onstart="" thumburl="panos/TD2_Design_Studio.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/TD2_Design_Studio.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/TD2_Design_Studio.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_To_main_building_and_amphitheatre" title="To main building and amphitheatre" onstart="" thumburl="panos/To_main_building_and_amphitheatre.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/To_main_building_and_amphitheatre.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/To_main_building_and_amphitheatre.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_VC_Room" title="VC Room" onstart="" thumburl="panos/VC_Room.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/VC_Room.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/VC_Room.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_Weaving_Studio" title="Weaving Studio" onstart="" thumburl="panos/Weaving_Studio.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Weaving_Studio.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Weaving_Studio.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048,3840" />
+		</image>
+
+	</scene>
+
+
+</krpano>
