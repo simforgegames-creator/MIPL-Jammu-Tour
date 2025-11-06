@@ -24,11 +24,11 @@
 	<action name="do_crop_animation" scope="local" args="framewidth, frameheight, framerate">
 		<!--  define local variables  -->
 calc(local.xframes, (caller.imagewidth /framewidth) BOR 0); calc(local.frames, xframes * ((caller.imageheight / frameheight) BOR 0)); def(local.frame, integer, 0);
-						<!--  set the first frame  -->
+																<!--  set the first frame  -->
 calc(caller.crop, '0|0|' + framewidth + '|' + frameheight);
-						<!--  do the animation  -->
+																<!--  do the animation  -->
 setinterval(calc('crop_anim_' + caller.name), calc(1.0 / framerate), if(caller.loaded, inc(frame); if(frame GE frames, if(caller.onlastframe !== null, callwith(caller, onlastframe() ) ); set(frame,0); ); mod(xpos, frame, xframes); div(ypos, frame, xframes); Math.floor(ypos); mul(xpos, framewidth); mul(ypos, frameheight); calc(caller.crop, xpos + '|' + ypos + '|' + framewidth + '|' + frameheight); ,
-						<!--  stop the interval when the hotspot gets removed  -->
+																<!--  stop the interval when the hotspot gets removed  -->
 clearinterval(calc('crop_anim_' + caller.name)); ); );
 
 	</action>
@@ -91,10 +91,10 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 		calc(local.frames, xframes * ((caller.imageheight / frameheight) BOR 0));
 		def(local.frame, integer, 0);
 		
-								<!-- set the first frame -->
+																		<!-- set the first frame -->
 		calc(caller.crop, '0|0|' + framewidth + '|' + frameheight);
 		
-								<!-- do the animation -->
+																		<!-- do the animation -->
 		setinterval(calc('crop_anim_' + caller.name), calc(1.0 / framerate),
 			if(caller.loaded,
 				inc(frame);
@@ -106,7 +106,7 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 				mul(ypos, frameheight);
 				calc(caller.crop, xpos + '|' + ypos + '|' + framewidth + '|' + frameheight);
 			  ,
-										<!-- stop the interval when the hotspot gets removed -->
+																				<!-- stop the interval when the hotspot gets removed -->
 				clearinterval(calc('crop_anim_' + caller.name));
 			);
 		);
@@ -198,7 +198,7 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	set(hotspot[spot_1].alpha, 0.0);
 	
 	
-							<!-- Keep hotspots hidden initially -->
+																	<!-- Keep hotspots hidden initially -->
 	set(autorotate.enabled,false);
 	wait(blend);
 	delayedcall(2, normalview() );
@@ -210,7 +210,7 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	tween(view.vlookat, 0, 2.5, easeInOutQuad);
 	tween(view.fov, 65, 2.5, easeInOutQuad);
 	tween(view.fisheye, 0.0, 2.5, easeInOutQuad);
-	wait(1); 						<!-- Ensure all transitions complete before showing hotspots -->
+	wait(1); 																<!-- Ensure all transitions complete before showing hotspots -->
 		<!-- Show hotspots after transition -->
 	tween(hotspot[hsp_0_4].alpha,  1.0, 1.0, easeInOutQuad); 
 	tween(hotspot[hsp_0_2].alpha,  1.0, 1.0, easeInOutQuad); 
@@ -240,9 +240,7 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<!-- Autorotate -->
 	<autorotate enabled="false" waittime="3.0" accel="0.5" speed="6.0" horizon="0.0" tofov="100" />
 
-	<scene name="scene_DJI_0088_sky-2" title="Aerial View 1" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/image/01 ADM block campus.jpg">
-
-
+	<scene name="scene_01" title="ADM block campus" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/adm Thumb.jpg">
 		<view fov="90" vlookat="0" hlookat="10" />
 		<!-- Define the controls and preview -->
 		<preview url="panos/image/01 ADM block campus.jpg" />
@@ -250,17 +248,13 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/01 ADM block campus.jpg" />
-
 		</image>
 
-		<hotspot name="hsp_0_4" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_DJI_0088_sky-3);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
-		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="ADM block campus" parent="hotspot[hsp_0_4]"/>
-
-
+		<hotspot name="hsp_1_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_02);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Adm block Front open area" parent="hotspot[hsp_1_1]"/>
 	</scene>
 
-	<scene name="scene_DJI_0088_sky-3" title="Aerial View 2" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/image/04 Adm block Front open area.jpg">
-
+	<scene name="scene_02" title="Adm block Front open area" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/ADM Block Thumb .png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
 		<!-- Define the controls and preview -->
@@ -272,10 +266,104 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 
 		</image>
 
-		<hotspot name="hsp_0_4" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_Amphitheatre);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
-		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Adm block Front open area" parent="hotspot[hsp_0_4]"/>
+		<hotspot name="hsp_2_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_03);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Als truck parking lot" parent="hotspot[hsp_2_1]"/>
+	</scene>
 
+	<scene name="scene_03" title="Als truck parking lot" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/Thumb.png">
 
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/05 Als truck parking lot 01 [ last ].jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/05 Als truck parking lot 01 [ last ].jpg" />
+
+		</image>
+
+		<hotspot name="hsp_3_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_04);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Als truck parking lot" parent="hotspot[hsp_3_1]"/>
+	</scene>
+
+	<scene name="scene_04" title="Als truck parking lot" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/Parking lot 02 Thumb .png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/06 Als truck parking lot 02 [ last scond ].jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/06 Als truck parking lot 02 [ last scond ].jpg" />
+
+		</image>
+
+		<hotspot name="hsp_4_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_05);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Als truck parking lot" parent="hotspot[hsp_4_1]"/>
+	</scene>
+
+	<scene name="scene_05" title="Haridwar parking lot gate" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/Haridwar gate thumb.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/07 Haridwar parking lot gate.jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/07 Haridwar parking lot gate.jpg" />
+
+		</image>
+
+		<hotspot name="hsp_5_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_06);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Haridwar parking lot gate" parent="hotspot[hsp_5_1]"/>
+	</scene>
+
+	<scene name="scene_06" title="Main Gate Chekpost" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/Maingate chek post thumb .png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/08 Main Gate Chekpost.jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/08 Main Gate Chekpost.jpg" />
+
+		</image>
+
+		<hotspot name="hsp_6_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_07);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Main Gate Chekpost" parent="hotspot[hsp_6_1]"/>
+	</scene>
+
+	<scene name="scene_07" title="Entrance area" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/09 entance area tumb.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/09 Entrance area.jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/09 Entrance area.jpg" />
+
+		</image>
+
+		<hotspot name="hsp_7_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_08);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Entrance area" parent="hotspot[hsp_7_1]"/>
+	</scene>
+
+	<scene name="scene_08" title="T morh road" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/T morh thumb.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/10 T morh road copy.jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/10 T morh road copy.jpg" />
+
+		</image>
+
+		<hotspot name="hsp_8_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_09);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="T morh road" parent="hotspot[hsp_8_1]"/>
 	</scene>
 
 
