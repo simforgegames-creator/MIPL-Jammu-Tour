@@ -24,11 +24,11 @@
 	<action name="do_crop_animation" scope="local" args="framewidth, frameheight, framerate">
 		<!--  define local variables  -->
 calc(local.xframes, (caller.imagewidth /framewidth) BOR 0); calc(local.frames, xframes * ((caller.imageheight / frameheight) BOR 0)); def(local.frame, integer, 0);
-																<!--  set the first frame  -->
+																																																		<!--  set the first frame  -->
 calc(caller.crop, '0|0|' + framewidth + '|' + frameheight);
-																<!--  do the animation  -->
+																																																		<!--  do the animation  -->
 setinterval(calc('crop_anim_' + caller.name), calc(1.0 / framerate), if(caller.loaded, inc(frame); if(frame GE frames, if(caller.onlastframe !== null, callwith(caller, onlastframe() ) ); set(frame,0); ); mod(xpos, frame, xframes); div(ypos, frame, xframes); Math.floor(ypos); mul(xpos, framewidth); mul(ypos, frameheight); calc(caller.crop, xpos + '|' + ypos + '|' + framewidth + '|' + frameheight); ,
-																<!--  stop the interval when the hotspot gets removed  -->
+																																																		<!--  stop the interval when the hotspot gets removed  -->
 clearinterval(calc('crop_anim_' + caller.name)); ); );
 
 	</action>
@@ -91,10 +91,10 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 		calc(local.frames, xframes * ((caller.imageheight / frameheight) BOR 0));
 		def(local.frame, integer, 0);
 		
-																		<!-- set the first frame -->
+																																																				<!-- set the first frame -->
 		calc(caller.crop, '0|0|' + framewidth + '|' + frameheight);
 		
-																		<!-- do the animation -->
+																																																				<!-- do the animation -->
 		setinterval(calc('crop_anim_' + caller.name), calc(1.0 / framerate),
 			if(caller.loaded,
 				inc(frame);
@@ -106,7 +106,7 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 				mul(ypos, frameheight);
 				calc(caller.crop, xpos + '|' + ypos + '|' + framewidth + '|' + frameheight);
 			  ,
-																				<!-- stop the interval when the hotspot gets removed -->
+																																																						<!-- stop the interval when the hotspot gets removed -->
 				clearinterval(calc('crop_anim_' + caller.name));
 			);
 		);
@@ -198,7 +198,7 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	set(hotspot[spot_1].alpha, 0.0);
 	
 	
-																	<!-- Keep hotspots hidden initially -->
+																																																			<!-- Keep hotspots hidden initially -->
 	set(autorotate.enabled,false);
 	wait(blend);
 	delayedcall(2, normalview() );
@@ -210,7 +210,7 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	tween(view.vlookat, 0, 2.5, easeInOutQuad);
 	tween(view.fov, 65, 2.5, easeInOutQuad);
 	tween(view.fisheye, 0.0, 2.5, easeInOutQuad);
-	wait(1); 																<!-- Ensure all transitions complete before showing hotspots -->
+	wait(1); 																																																		<!-- Ensure all transitions complete before showing hotspots -->
 		<!-- Show hotspots after transition -->
 	tween(hotspot[hsp_0_4].alpha,  1.0, 1.0, easeInOutQuad); 
 	tween(hotspot[hsp_0_2].alpha,  1.0, 1.0, easeInOutQuad); 
@@ -364,6 +364,516 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 
 		<hotspot name="hsp_8_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_09);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
 		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="T morh road" parent="hotspot[hsp_8_1]"/>
+	</scene>
+
+	<scene name="scene_09" title="R center Udhampur main gate" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/11, R center Udhampur main gate thumb.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/11, R center Udhampur main gate.jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/11, R center Udhampur main gate.jpg" />
+		</image>
+
+		<hotspot name="hsp_9_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_10);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="R center Udhampur main gate" parent="hotspot[hsp_9_1]"/>
+	</scene>
+
+	<scene name="scene_10" title="R center Udhampur entarnce gate" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/12 Thumb.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/12 R center Udhampur entarnce gate.jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/12 R center Udhampur entarnce gate.jpg" />
+		</image>
+
+		<hotspot name="hsp_10_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_11);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="R center Udhampur entarnce gate" parent="hotspot[hsp_10_1]"/>
+	</scene>
+
+	<scene name="scene_11" title="udhhmpur out road" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/13 Thumb.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/13 udhhmpur out road .jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/13 udhhmpur out road .jpg" />
+		</image>
+
+		<hotspot name="hsp_11_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_12);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="udhhmpur out road" parent="hotspot[hsp_11_1]"/>
+	</scene>
+
+	<scene name="scene_12" title="Tavi river bridge" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/14 Thumb.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/14 Tavi river bridge .jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/14 Tavi river bridge .jpg" />
+		</image>
+
+		<hotspot name="hsp_12_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_13);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Tavi river bridge" parent="hotspot[hsp_12_1]"/>
+	</scene>
+
+	<scene name="scene_13" title="Lendslide In jammu city entarnce" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/15 Thumb.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/15 Lendslide In jammu city entarnce.jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/15 Lendslide In jammu city entarnce.jpg" />
+		</image>
+
+		<hotspot name="hsp_13_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_14);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Lendslide In jammu city entarnce" parent="hotspot[hsp_13_1]"/>
+	</scene>
+
+	<scene name="scene_14" title="Ravi river check dam near pathankot" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/17 thumb.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/17 Ravi river check dam near pathankot .jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/17 Ravi river check dam near pathankot .jpg" />
+		</image>
+
+		<hotspot name="hsp_14_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_15);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Ravi river check dam near pathankot" parent="hotspot[hsp_14_1]"/>
+	</scene>
+
+	<scene name="scene_15" title="Ravi river check dam near pathankot" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/18 thumb.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/17 Ravi river check dam near pathankot .jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/17 Ravi river check dam near pathankot .jpg" />
+		</image>
+
+		<hotspot name="hsp_15_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_16);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Ravi river check dam near pathankot" parent="hotspot[hsp_15_1]"/>
+	</scene>
+
+	<scene name="scene_16" title="R center Pathankot" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/19 thumb.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/19 R center Pathankot.jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/19 R center Pathankot.jpg" />
+		</image>
+
+		<hotspot name="hsp_16_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_17);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="R center Pathankot" parent="hotspot[hsp_16_1]"/>
+	</scene>
+
+	<scene name="scene_17" title="Militry station alihilal" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/20 thumb.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/20 Militry station alihilal .jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/20 Militry station alihilal .jpg" />
+		</image>
+
+		<hotspot name="hsp_17_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_18);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Militry station alihilal" parent="hotspot[hsp_17_1]"/>
+	</scene>
+
+	<scene name="scene_18" title="Mandi [himchal P.] Thin Street point 01" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/21 Thumb.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/21 Mandi [himchal P. ]Thin Street point  01 .jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/21 Mandi [himchal P. ]Thin Street point  01 .jpg" />
+		</image>
+
+		<hotspot name="hsp_18_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_19);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Mandi [himchal P.] Thin Street point 01" parent="hotspot[hsp_18_1]"/>
+	</scene>
+
+	<scene name="scene_19" title="Mandi [himchal P.] Thin Street point 02" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/22 Thumb.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/22 Mandi [himchal P. ]Thin Street point  02.jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/22 Mandi [himchal P. ]Thin Street point  02.jpg" />
+		</image>
+
+		<hotspot name="hsp_19_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_20);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Mandi [himchal P.] Thin Street point 02" parent="hotspot[hsp_19_1]"/>
+	</scene>
+
+	<scene name="scene_20" title="Mandi road lend slide" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/23 Thumb.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/23 Mandi road lend slide .jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/23 Mandi road lend slide .jpg" />
+		</image>
+
+		<hotspot name="hsp_20_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_21);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Mandi road lend slide" parent="hotspot[hsp_20_1]"/>
+	</scene>
+
+	<scene name="scene_21" title="Mandi entrance bridge" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/image/24 mandi entrance bridge .jpg">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/24 mandi entrance bridge .jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/24 mandi entrance bridge .jpg" />
+		</image>
+
+		<hotspot name="hsp_21_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_22);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Mandi entrance bridge" parent="hotspot[hsp_21_1]"/>
+	</scene>
+
+	<scene name="scene_22" title="Transit camp 239" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/25 Thumb.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/25 transit camp 239 .jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/25 transit camp 239 .jpg" />
+		</image>
+
+		<hotspot name="hsp_22_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_23);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Transit camp 239" parent="hotspot[hsp_22_1]"/>
+	</scene>
+
+	<scene name="scene_23" title="Lend slide near Pandoh Dam" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/26 Thumb.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/26 lend slide near Pandoh Dam.jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/26 lend slide near Pandoh Dam.jpg" />
+		</image>
+
+		<hotspot name="hsp_23_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_24);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Lend slide near Pandoh Dam" parent="hotspot[hsp_23_1]"/>
+	</scene>
+
+	<scene name="scene_24" title="Palchan Transit Camp" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/39 Palchan Transit Camp THUMB.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/39 Palchan Transit Camp.jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/39 Palchan Transit Camp.jpg" />
+		</image>
+
+		<hotspot name="hsp_24_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_25);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Palchan Transit Camp" parent="hotspot[hsp_24_1]"/>
+	</scene>
+
+	<scene name="scene_25" title="Palchan Transit Camp 02" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/40 Palchan Transit Camp 02 THUMB.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/40 Palchan Transit Camp 02.jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/40 Palchan Transit Camp 02.jpg" />
+		</image>
+
+		<hotspot name="hsp_25_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_26);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Palchan Transit Camp 02" parent="hotspot[hsp_25_1]"/>
+	</scene>
+
+	<scene name="scene_26" title="Lendslide after Palchan" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/41 lendslide after Palchan THUMB.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/41 lendslide after Palchan.jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/41 lendslide after Palchan.jpg" />
+		</image>
+
+		<hotspot name="hsp_26_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_27);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Lendslide after Palchan" parent="hotspot[hsp_26_1]"/>
+	</scene>
+
+	<scene name="scene_27" title="Atal Tunnel Rohtang" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/42 Atal Tunnel RohtangTHUMB.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/42 Atal Tunnel Rohtang.jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/42 Atal Tunnel Rohtang.jpg" />
+		</image>
+
+		<hotspot name="hsp_27_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_28);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Atal Tunnel Rohtang" parent="hotspot[hsp_27_1]"/>
+	</scene>
+
+	<scene name="scene_28" title="Transit camp tandi" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/45 Transit camp tandi THUMB.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/45 Transit camp tandi.jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/45 Transit camp tandi.jpg" />
+		</image>
+
+		<hotspot name="hsp_28_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_29);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Transit camp tandi" parent="hotspot[hsp_28_1]"/>
+	</scene>
+
+	<scene name="scene_29" title="River brideg jispa" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/46 River brideg jispa THUMB.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/46 River brideg jispa.jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/46 River brideg jispa.jpg" />
+		</image>
+
+		<hotspot name="hsp_29_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_30);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="River brideg jispa" parent="hotspot[hsp_29_1]"/>
+	</scene>
+
+	<scene name="scene_30" title="Transit Camp 258" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/48 Transit Camp 258 THUMB.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/48 Transit Camp 258 .jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/48 Transit Camp 258 .jpg" />
+		</image>
+
+		<hotspot name="hsp_30_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_31);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Transit Camp 258" parent="hotspot[hsp_30_1]"/>
+	</scene>
+
+	<scene name="scene_31" title="Zing Zing Bar Point" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/50 Zing Zing Bar Point THUMB.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/50 Zing Zing Bar Point.jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/50 Zing Zing Bar Point.jpg" />
+		</image>
+
+		<hotspot name="hsp_31_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_32);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Zing Zing Bar Point" parent="hotspot[hsp_31_1]"/>
+	</scene>
+
+	<scene name="scene_32" title="Baralacha Point" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/52 baralacha Point  THUMB.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/52 baralacha Point .jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/52 baralacha Point .jpg" />
+		</image>
+
+		<hotspot name="hsp_32_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_33);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Baralacha Point" parent="hotspot[hsp_32_1]"/>
+	</scene>
+
+	<scene name="scene_33" title="Transit camp sarchu" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/53 Transit camp sarchu  THUMB.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/53 Transit camp sarchu .jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/53 Transit camp sarchu .jpg" />
+		</image>
+
+		<hotspot name="hsp_33_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_34);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Transit camp sarchu" parent="hotspot[hsp_33_1]"/>
+	</scene>
+
+	<scene name="scene_34" title="Himank Bridge" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/56 Himank Bridge THUMB.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/56 Himank Bridge.jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/56 Himank Bridge.jpg" />
+		</image>
+
+		<hotspot name="hsp_34_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_35);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Himank Bridge" parent="hotspot[hsp_34_1]"/>
+	</scene>
+
+	<scene name="scene_35" title="Road u turn Photo" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/59 Road u turn Photo THUMB.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/59 Road u turn Photo.jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/59 Road u turn Photo.jpg" />
+		</image>
+
+		<hotspot name="hsp_35_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_36);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Himank Bridge" parent="hotspot[hsp_35_1]"/>
+	</scene>
+
+	<scene name="scene_36" title="Nakeela Point" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/62 Nakeela Point THUMB.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/62 Nakeela Point.jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/62 Nakeela Point.jpg" />
+		</image>
+
+		<hotspot name="hsp_36_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_37);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Nakeela Point" parent="hotspot[hsp_36_1]"/>
+	</scene>
+
+	<scene name="scene_37" title="Shurya Chakra Point" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/65 Shurya Chakra Point THUMB.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/65 Shurya Chakra Point.jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/65 Shurya Chakra Point.jpg" />
+		</image>
+
+		<hotspot name="hsp_37_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_38);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Shurya Chakra Point" parent="hotspot[hsp_37_1]"/>
+	</scene>
+
+	<scene name="scene_38" title="Snow Road" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/67 Snow Road THUMB.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/67 Snow Road .jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/67 Snow Road .jpg" />
+		</image>
+
+		<hotspot name="hsp_38_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_39);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Snow Road" parent="hotspot[hsp_38_1]"/>
+	</scene>
+
+	<scene name="scene_39" title="Transit Camp 264" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/68 Transit Camp 264 THUMB.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/68 Transit Camp 264.jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/68 Transit Camp 264.jpg" />
+		</image>
+
+		<hotspot name="hsp_39_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_40);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Transit Camp 264" parent="hotspot[hsp_39_1]"/>
+	</scene>
+
+	<scene name="scene_40" title="Transit Camp 264 Entarnce gate" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/69 Transit Camp 264  Entarnce gate THUMB.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/69 Transit Camp 264  Entarnce gate.jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/69 Transit Camp 264  Entarnce gate.jpg" />
+		</image>
+
+		<hotspot name="hsp_40_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_41);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Transit Camp 264 Entarnce gate" parent="hotspot[hsp_40_1]"/>
+	</scene>
+
+	<scene name="scene_41" title="Taglangla Pass" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/71 Taglangla Pass THAMB.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/71 Taglangla Pass.jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/71 Taglangla Pass.jpg" />
+		</image>
+
+		<hotspot name="hsp_41_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_42);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Taglangla Pass" parent="hotspot[hsp_41_1]"/>
+	</scene>
+
+	<scene name="scene_42" title="Upashi T point" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/73 Upashi T point THUMB.png">
+
+		<view fov="90" vlookat="0" hlookat="10" />
+		<!-- Define the controls and preview -->
+		<preview url="panos/image/73 Upashi T point.jpg" />
+
+		<!-- Define the image for the scene -->
+		<image>
+			<sphere url="panos/image/73 Upashi T point.jpg" />
+		</image>
+
+		<hotspot name="hsp_42_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_43);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
+		<layer name="text4" url="textfield.swf" width="200.00" backgroundalpha="0.50" align="down" x="0" y="100" height="55" bgborder="1,1,1,1 16777215 0" css="font-family:verdana; font-size:24px; color:#ffffff;" bgroundedge="5 5 5 5" bgshadow="0 0 0 0х000000 0.5" bgcolor="0x111E4E" bg="true" textwidth="120" textheight="38" textalign="center" text="Upashi T point" parent="hotspot[hsp_42_1]"/>
 	</scene>
 
 
