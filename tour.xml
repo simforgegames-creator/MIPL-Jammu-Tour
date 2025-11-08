@@ -24,11 +24,11 @@
 	<action name="do_crop_animation" scope="local" args="framewidth, frameheight, framerate">
 		<!--  define local variables  -->
 calc(local.xframes, (caller.imagewidth /framewidth) BOR 0); calc(local.frames, xframes * ((caller.imageheight / frameheight) BOR 0)); def(local.frame, integer, 0);
-																																																																																<!--  set the first frame  -->
+																																																																																				<!--  set the first frame  -->
 calc(caller.crop, '0|0|' + framewidth + '|' + frameheight);
-																																																																																<!--  do the animation  -->
+																																																																																				<!--  do the animation  -->
 setinterval(calc('crop_anim_' + caller.name), calc(1.0 / framerate), if(caller.loaded, inc(frame); if(frame GE frames, if(caller.onlastframe !== null, callwith(caller, onlastframe() ) ); set(frame,0); ); mod(xpos, frame, xframes); div(ypos, frame, xframes); Math.floor(ypos); mul(xpos, framewidth); mul(ypos, frameheight); calc(caller.crop, xpos + '|' + ypos + '|' + framewidth + '|' + frameheight); ,
-																																																																																<!--  stop the interval when the hotspot gets removed  -->
+																																																																																				<!--  stop the interval when the hotspot gets removed  -->
 clearinterval(calc('crop_anim_' + caller.name)); ); );
 
 	</action>
@@ -91,10 +91,10 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 		calc(local.frames, xframes * ((caller.imageheight / frameheight) BOR 0));
 		def(local.frame, integer, 0);
 		
-																																																																																		<!-- set the first frame -->
+																																																																																						<!-- set the first frame -->
 		calc(caller.crop, '0|0|' + framewidth + '|' + frameheight);
 		
-																																																																																		<!-- do the animation -->
+																																																																																						<!-- do the animation -->
 		setinterval(calc('crop_anim_' + caller.name), calc(1.0 / framerate),
 			if(caller.loaded,
 				inc(frame);
@@ -106,7 +106,7 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 				mul(ypos, frameheight);
 				calc(caller.crop, xpos + '|' + ypos + '|' + framewidth + '|' + frameheight);
 			  ,
-																																																																																				<!-- stop the interval when the hotspot gets removed -->
+																																																																																								<!-- stop the interval when the hotspot gets removed -->
 				clearinterval(calc('crop_anim_' + caller.name));
 			);
 		);
@@ -198,7 +198,7 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	set(hotspot[spot_1].alpha, 0.0);
 	
 	
-																																																																																	<!-- Keep hotspots hidden initially -->
+																																																																																					<!-- Keep hotspots hidden initially -->
 	set(autorotate.enabled,false);
 	wait(blend);
 	delayedcall(2, normalview() );
@@ -210,7 +210,7 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	tween(view.vlookat, 0, 2.5, easeInOutQuad);
 	tween(view.fov, 65, 2.5, easeInOutQuad);
 	tween(view.fisheye, 0.0, 2.5, easeInOutQuad);
-	wait(1); 																																																																																<!-- Ensure all transitions complete before showing hotspots -->
+	wait(1); 																																																																																				<!-- Ensure all transitions complete before showing hotspots -->
 		<!-- Show hotspots after transition -->
 	tween(hotspot[hsp_0_4].alpha,  1.0, 1.0, easeInOutQuad); 
 	tween(hotspot[hsp_0_2].alpha,  1.0, 1.0, easeInOutQuad); 
@@ -242,10 +242,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 
 	<scene name="scene_01" title="ADM block campus" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/adm Thumb.jpg">
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/01 ADM block campus.jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/01 ADM block campus.jpg" />
 		</image>
@@ -257,10 +256,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_02" title="Adm block Front open area" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/ADM Block Thumb .png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/04 Adm block Front open area.jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/04 Adm block Front open area.jpg" />
 
@@ -273,10 +271,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_03" title="Als truck parking lot" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/Thumb.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/05 Als truck parking lot 01 [ last ].jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/05 Als truck parking lot 01 [ last ].jpg" />
 
@@ -289,10 +286,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_04" title="Als truck parking lot" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/Parking lot 02 Thumb .png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/06 Als truck parking lot 02 [ last scond ].jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/06 Als truck parking lot 02 [ last scond ].jpg" />
 
@@ -305,10 +301,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_05" title="Haridwar parking lot gate" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/Haridwar gate thumb.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/07 Haridwar parking lot gate.jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/07 Haridwar parking lot gate.jpg" />
 
@@ -321,10 +316,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_06" title="Main Gate Chekpost" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/Maingate chek post thumb .png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/08 Main Gate Chekpost.jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/08 Main Gate Chekpost.jpg" />
 
@@ -337,10 +331,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_07" title="Entrance area" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/09 entance area tumb.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/09 Entrance area.jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/09 Entrance area.jpg" />
 
@@ -353,10 +346,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_08" title="T morh road" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/T morh thumb.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/10 T morh road copy.jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/10 T morh road copy.jpg" />
 
@@ -369,10 +361,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_09" title="R center Udhampur main gate" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/11, R center Udhampur main gate thumb.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/11, R center Udhampur main gate.jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/11, R center Udhampur main gate.jpg" />
 		</image>
@@ -384,10 +375,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_10" title="R center Udhampur entarnce gate" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/12 Thumb.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/12 R center Udhampur entarnce gate.jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/12 R center Udhampur entarnce gate.jpg" />
 		</image>
@@ -399,12 +389,11 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_11" title="udhhmpur out road" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/13 Thumb.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
-		<preview url="panos/image/13 udhhmpur out road .png" />
 
-		<!-- Define the image for the scene -->
+		<preview url="panos/image/13 udhhmpur out road .jpg" />
+
 		<image>
-			<sphere url="panos/image/13 udhhmpur out road .png" />
+			<sphere url="panos/image/13 udhhmpur out road .jpg" />
 		</image>
 
 		<hotspot name="hsp_11_1" style="link_hs_sm" onout="tween(scale,0.34,0.1);" onclick="skin_loadscene(scene_12);" onhover="tween(scale,0.45,0.1);" url="%FIRSTXML%/add_hotspot/picture/Nift Icon.png" handcursor="false" scale="0.34" ath="0" atv="11" install_onclick="5" visible2_temp="true" enabled2_temp="true" />
@@ -414,10 +403,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_12" title="Tavi river bridge" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/14 Thumb.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/14 Tavi river bridge .jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/14 Tavi river bridge .jpg" />
 		</image>
@@ -429,10 +417,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_13" title="Lendslide In jammu city entarnce" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/15 Thumb.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/15 Lendslide In jammu city entarnce.jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/15 Lendslide In jammu city entarnce.jpg" />
 		</image>
@@ -444,10 +431,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_14" title="Ravi river check dam near pathankot" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/17 thumb.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/17 Ravi river check dam near pathankot .jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/17 Ravi river check dam near pathankot .jpg" />
 		</image>
@@ -459,10 +445,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_15" title="Ravi river check dam near pathankot" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/18 thumb.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/17 Ravi river check dam near pathankot .jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/17 Ravi river check dam near pathankot .jpg" />
 		</image>
@@ -486,10 +471,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_16" title="R center Pathankot" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/19 thumb.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/19 R center Pathankot.jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/19 R center Pathankot.jpg" />
 		</image>
@@ -501,10 +485,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_17" title="Militry station alihilal" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/20 thumb.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/20 Militry station alihilal .jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/20 Militry station alihilal .jpg" />
 		</image>
@@ -516,10 +499,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_18" title="Mandi [himchal P.] Thin Street point 01" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/21 Thumb.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/21 Mandi [himchal P. ]Thin Street point  01 .jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/21 Mandi [himchal P. ]Thin Street point  01 .jpg" />
 		</image>
@@ -531,10 +513,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_19" title="Mandi [himchal P.] Thin Street point 02" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/22 Thumb.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/22 Mandi [himchal P. ]Thin Street point  02.jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/22 Mandi [himchal P. ]Thin Street point  02.jpg" />
 		</image>
@@ -546,10 +527,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_20" title="Mandi road lend slide" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/23 Thumb.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/23 Mandi road lend slide .jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/23 Mandi road lend slide .jpg" />
 		</image>
@@ -561,10 +541,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_21" title="Mandi entrance bridge" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/image/24 mandi entrance bridge .jpg">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/24 mandi entrance bridge .jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/24 mandi entrance bridge .jpg" />
 		</image>
@@ -576,10 +555,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_22" title="Transit camp 239" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/25 Thumb.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/25 transit camp 239 .jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/25 transit camp 239 .jpg" />
 		</image>
@@ -591,10 +569,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_23" title="Lend slide near Pandoh Dam" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/26 Thumb.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/26 lend slide near Pandoh Dam.jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/26 lend slide near Pandoh Dam.jpg" />
 		</image>
@@ -618,10 +595,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_24" title="Palchan Transit Camp" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/39 Palchan Transit Camp THUMB.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/39 Palchan Transit Camp.jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/39 Palchan Transit Camp.jpg" />
 		</image>
@@ -633,10 +609,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_25" title="Palchan Transit Camp 02" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/40 Palchan Transit Camp 02 THUMB.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/40 Palchan Transit Camp 02.jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/40 Palchan Transit Camp 02.jpg" />
 		</image>
@@ -648,10 +623,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_26" title="Lendslide after Palchan" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/41 lendslide after Palchan THUMB.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/41 lendslide after Palchan.jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/41 lendslide after Palchan.jpg" />
 		</image>
@@ -663,10 +637,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_27" title="Atal Tunnel Rohtang" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/42 Atal Tunnel RohtangTHUMB.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/42 Atal Tunnel Rohtang.jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/42 Atal Tunnel Rohtang.jpg" />
 		</image>
@@ -702,10 +675,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_28" title="Transit camp tandi" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/45 Transit camp tandi THUMB.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/45 Transit camp tandi.jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/45 Transit camp tandi.jpg" />
 		</image>
@@ -717,10 +689,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_29" title="River brideg jispa" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/46 River brideg jispa THUMB.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/46 River brideg jispa.jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/46 River brideg jispa.jpg" />
 		</image>
@@ -744,10 +715,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_30" title="Transit Camp 258" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/48 Transit Camp 258 THUMB.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/48 Transit Camp 258 .jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/48 Transit Camp 258 .jpg" />
 		</image>
@@ -771,10 +741,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_31" title="Zing Zing Bar Point" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/50 Zing Zing Bar Point THUMB.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/50 Zing Zing Bar Point.jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/50 Zing Zing Bar Point.jpg" />
 		</image>
@@ -798,10 +767,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_32" title="Baralacha Point" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/52 baralacha Point  THUMB.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/52 baralacha Point .jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/52 baralacha Point .jpg" />
 		</image>
@@ -813,10 +781,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_33" title="Transit camp sarchu" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/53 Transit camp sarchu  THUMB.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/53 Transit camp sarchu .jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/53 Transit camp sarchu .jpg" />
 		</image>
@@ -864,10 +831,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_34" title="Himank Bridge" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/56 Himank Bridge THUMB.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/56 Himank Bridge.jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/56 Himank Bridge.jpg" />
 		</image>
@@ -879,10 +845,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_35" title="Road u turn Photo" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/59 Road u turn Photo THUMB.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/59 Road u turn Photo.jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/59 Road u turn Photo.jpg" />
 		</image>
@@ -918,10 +883,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_36" title="Nakeela Point" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/62 Nakeela Point THUMB.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/62 Nakeela Point.jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/62 Nakeela Point.jpg" />
 		</image>
@@ -957,10 +921,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_37" title="Shurya Chakra Point" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/65 Shurya Chakra Point THUMB.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/65 Shurya Chakra Point.jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/65 Shurya Chakra Point.jpg" />
 		</image>
@@ -984,10 +947,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_38" title="Snow Road" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/67 Snow Road THUMB.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/67 Snow Road .jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/67 Snow Road .jpg" />
 		</image>
@@ -999,10 +961,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_39" title="Transit Camp 264" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/68 Transit Camp 264 THUMB.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/68 Transit Camp 264.jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/68 Transit Camp 264.jpg" />
 		</image>
@@ -1014,10 +975,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_40" title="Transit Camp 264 Entarnce gate" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/69 Transit Camp 264  Entarnce gate THUMB.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/69 Transit Camp 264  Entarnce gate.jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/69 Transit Camp 264  Entarnce gate.jpg" />
 		</image>
@@ -1041,10 +1001,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_41" title="Taglangla Pass" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/71 Taglangla Pass THAMB.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/71 Taglangla Pass.jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/71 Taglangla Pass.jpg" />
 		</image>
@@ -1068,10 +1027,9 @@ clearinterval(calc('crop_anim_' + caller.name)); ); );
 	<scene name="scene_42" title="Upashi T point" onstart="startLittlePlanetAnimation();" onloaded="hideloading();" thumburl="panos/thumbnail/73 Upashi T point THUMB.png">
 
 		<view fov="90" vlookat="0" hlookat="10" />
-		<!-- Define the controls and preview -->
+
 		<preview url="panos/image/73 Upashi T point.jpg" />
 
-		<!-- Define the image for the scene -->
 		<image>
 			<sphere url="panos/image/73 Upashi T point.jpg" />
 		</image>
